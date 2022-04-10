@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import AuthPage from "./AuthPage";
+import AuthPage from "./pages/AuthPage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 

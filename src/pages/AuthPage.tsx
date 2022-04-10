@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
-import Button from "./ui-components/Button";
-import ErrorMessage from "./ui-components/ErrorMessage";
+import Button from "../ui-components/Button";
+import ErrorMessage from "../ui-components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
-import { ExperimentConfigContext, IValue } from "./ExperimentConfigContext";
+import { ExperimentConfigContext, IValue } from "../ExperimentConfigContext";
 
 const text = {
   instruction: "Kérjük adja meg a kísérlethez kapott kódot!",
