@@ -3,16 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import AuthPage from "./pages/AuthPage";
+import IntroPage from "./pages/IntroPage";
+import TrialsPage from "./pages/Trials";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-function Intro() {
-  return <h2>Intro</h2>;
-}
-
-function Trials() {
-  return <h2>Conditions</h2>;
-}
 
 function Outro() {
   return <h2>Outro</h2>;
@@ -24,8 +18,8 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="entry" element={<AuthPage />} />
-          <Route path="intro" element={<Intro />} />
-          <Route path="trials" element={<Trials />} />
+          <Route path="intro" element={<IntroPage />} />
+          <Route path="trials" element={<TrialsPage />} />
           <Route path="outro" element={<Outro />} />
         </Route>
       </Routes>

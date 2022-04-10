@@ -9,7 +9,7 @@ function App() {
       </header>
       <ExperimentConfigContextProvider>
         <div className="flex w-full justify-center">
-          <div className="w-full md:max-w-3xl mx-6">
+          <div className="w-full max-w-xl mx-6">
             <Outlet />
           </div>
         </div>

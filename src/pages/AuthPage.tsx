@@ -3,6 +3,7 @@ import Button from "../ui-components/Button";
 import ErrorMessage from "../ui-components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { ExperimentConfigContext, IValue } from "../ExperimentConfigContext";
+import PageTitle from "../ui-components/PageTitle";
 
 const text = {
   instruction: "Kérjük adja meg a kísérlethez kapott kódot!",
@@ -43,11 +44,9 @@ function AuthPage() {
 
   return (
     <>
+      <PageTitle>{text.instruction}</PageTitle>
       <div className="text-center">
-        <h2 className="w-3/6 m-auto block max-w-full text-2xl font-bold text-green-500 mt-5 md:mt-8">
-          {text.instruction}
-        </h2>
-        <form className="flex flex-col pt-7 md:pt-12 w-80 max-w-full px-2 block m-auto items-center">
+        <form className="flex flex-col w-80 max-w-full px-2 block m-auto items-center">
           <input
             type="text"
             value={accessCode}
