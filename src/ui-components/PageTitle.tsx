@@ -1,3 +1,7 @@
+/**
+* Title on a page.
+*
+*/
 const PageTitle: React.FC<{}> = ({ children }) => {
   return (
     <div className="text-center w-full pb-7 md:pb-12">

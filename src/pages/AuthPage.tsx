@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import Button from "../ui-components/Button";
+import PageButton from "../ui-components/PageButton";
 import ErrorMessage from "../ui-components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { ExperimentConfigContext, IValue } from "../ExperimentConfigContext";
@@ -25,7 +25,7 @@ function AuthPage() {
     setAcessCode(e.target.value);
   }
 
-  function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function handleSubmit(e: React.MouseEvent) {
     e.preventDefault();
     // Show the error message if the code field is empty
     if (!accessCode) return setErrorMessageVisible(true);
@@ -45,26 +45,24 @@ function AuthPage() {
   return (
     <>
       <PageTitle>{text.instruction}</PageTitle>
-      <div className="text-center">
-        <form className="flex flex-col w-80 max-w-full px-2 block m-auto items-center">
-          <input
-            type="text"
-            value={accessCode}
-            name="access_code"
-            onChange={(e) => handleChange(e)}
-            autoFocus
-            className={`border-2 ${
-              errorMessageVisible ? "border-red-500" : "border-gray-300"
-            } bg-white text-gray-900 appearance-none block w-full rounded-md py-3 px-4 focus:border-green-500 focus:outline-none text-center text-xl text-green-500`}
-          />
-          {errorMessageVisible && (
-            <ErrorMessage type="light">{text.errorMessage}</ErrorMessage>
-          )}
-          <Button type="primary" handleClick={handleSubmit}>
-            {text.submitButtonLabel}
-          </Button>
-        </form>
-      </div>
+      <form className="flex flex-col w-80 max-w-full px-2 block m-auto items-center">
+        <input
+          type="text"
+          value={accessCode}
+          name="access_code"
+          onChange={(e) => handleChange(e)}
+          autoFocus
+          className={`border-2 ${
+            errorMessageVisible ? "border-red-500" : "border-gray-300"
+          } bg-white text-gray-900 appearance-none block w-full rounded-md py-3 px-4 focus:border-green-500 focus:outline-none text-center text-xl text-green-500`}
+        />
+        {errorMessageVisible && (
+          <ErrorMessage type="light">{text.errorMessage}</ErrorMessage>
+        )}
+        <PageButton type="primary" handleClick={handleSubmit}>
+          {text.submitButtonLabel}
+        </PageButton>
+      </form>
     </>
   );
 }

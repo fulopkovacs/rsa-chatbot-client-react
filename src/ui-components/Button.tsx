@@ -1,8 +1,17 @@
-interface IButtonProps {
+export interface IButtonProps {
   type: "primary" | "secondary";
   handleClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
+/**
+ * A button
+ *
+ * @param props: The props of the button
+ *
+ * @remarks
+ *
+ * Check out @see {@link PageButton} for a button that is horizontally centered relative to its parent.
+ */
 const Button: React.FC<IButtonProps> = ({ type, handleClick, children }) => {
   return type === "primary" ? (
     <button

@@ -1,5 +1,5 @@
 import botImageUrl from "../img/bot-illustration.png";
-import Button from "../ui-components/Button";
+import PageButton from "../ui-components/PageButton";
 import PageTitle from "../ui-components/PageTitle";
 
 interface TrialIntroProps {
@@ -23,9 +23,9 @@ const TrialIntro: React.FC<TrialIntroProps> = ({
         <img className="text-center m-auto max-w-xs" src={botImageUrl} />
       )}
       <p className="whitespace-pre-wrap">{text}</p>
-      <Button type="primary" handleClick={startChatting}>
-        {button_label}
-      </Button>
+      <PageButton type="primary" handleClick={startChatting}>
+      {button_label}
+      </PageButton>
     </>
   );
 };

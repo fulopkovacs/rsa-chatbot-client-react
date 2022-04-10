@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import Button from "../ui-components/Button";
+import PageButton from "../ui-components/PageButton";
 import PageTitle from "../ui-components/PageTitle";
 
 const text = {
@@ -30,11 +30,9 @@ const IntroPage: React.FC<{}> = () => {
     <>
       <PageTitle>{text.instructionTitle}</PageTitle>
       <p className="whitespace-pre-wrap">{text.instructionBody}</p>
-      <div className="w-full flex flex-col items-center">
-        <Button type="primary" handleClick={handleClick}>
-          {text.startButtonText}
-        </Button>
-      </div>
+      <PageButton type="primary" handleClick={handleClick}>
+        {text.startButtonText}
+      </PageButton>
     </>
   );
 };
