@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import Button from "./ui-components/Button";
 import ErrorMessage from "./ui-components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
+import { ExperimentConfigContext, IValue } from "./ExperimentConfigContext";
 
 const text = {
   instruction: "Kérjük adja meg a kísérlethez kapott kódot!",
@@ -10,13 +11,12 @@ const text = {
   errorMessage: "A megadott kód érvénytelen. Kérjük adj meg egy másikat!",
 };
 
-export interface IExperimentConfig {
-  conditions: number;
-}
-
 function AuthPage() {
   const [accessCode, setAcessCode] = useState("");
   const [errorMessageVisible, setErrorMessageVisible] = useState(false);
+
+  const contextValue = useContext(ExperimentConfigContext) as IValue;
+  const { setExperimentConfig } = contextValue;
 
   const navigate = useNavigate();
 
@@ -27,14 +27,15 @@ function AuthPage() {
   function handleSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     // Show the error message if the code field is empty
-    if (accessCode) return setErrorMessageVisible(true);
+    if (!accessCode) return setErrorMessageVisible(true);
 
     // TODO: Try to load the config that belongs to the code
-    let err = true;
+    let err = false;
     if (err) {
       setErrorMessageVisible(true);
     } else {
       // 1. set config
+      setExperimentConfig({ conditions: 3 });
       // 2. redirect to intro
       navigate("/intro");
     }
