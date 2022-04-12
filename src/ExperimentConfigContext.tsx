@@ -1,14 +1,16 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext,  useState } from "react";
+import type { IChatMessages } from "./mockData";
 
 export interface IExperimentConfig {
   conditions: number;
+  messages: IChatMessages;
 }
 
 export interface IValue {
   setExperimentConfig: React.Dispatch<
     React.SetStateAction<IExperimentConfig | null>
   >;
-  experimentConfig?: IExperimentConfig | null;
+  experimentConfig?: IExperimentConfig;
 }
 
 const ExperimentConfigContext = createContext<IValue | null>(null);

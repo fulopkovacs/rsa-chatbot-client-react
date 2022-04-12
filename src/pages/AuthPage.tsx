@@ -4,6 +4,7 @@ import ErrorMessage from "../ui-components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { ExperimentConfigContext, IValue } from "../ExperimentConfigContext";
 import PageTitle from "../ui-components/PageTitle";
+import { chatData } from "../mockData";
 
 const text = {
   instruction: "Kérjük adja meg a kísérlethez kapott kódot!",
@@ -36,7 +37,7 @@ function AuthPage() {
       setErrorMessageVisible(true);
     } else {
       // 1. set config
-      setExperimentConfig({ conditions: 3 });
+      setExperimentConfig({ conditions: 3, messages: chatData });
       // 2. redirect to intro
       navigate("/intro");
     }

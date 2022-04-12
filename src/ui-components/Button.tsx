@@ -23,7 +23,7 @@ const Button: React.FC<IButtonProps> = ({ type, handleClick, children }) => {
   ) : (
     <button
       onClick={handleClick}
-      className="py-2 text-lg uppercase font-bold rounded-full bg-green-500  w-48 min-w-min mt-4 cursor-pointer hover:bg-green-600 active:bg-green-700 text-white"
+      className="py-2 text-lg uppercase font-bold rounded-full text-white w-48 min-w-min mt-4 cursor-pointer hover:bg-green-600 active:bg-green-700 border-2"
     >
       {children}
     </button>
