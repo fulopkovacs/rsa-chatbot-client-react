@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { ExperimentConfigContextProvider } from "./ExperimentConfigContext";
+import PageWithBreakpoints from "./ui-components/PageWithBreakpoints";
 
 function App() {
   return (
@@ -8,10 +9,10 @@ function App() {
         CogniBot
       </header>
       <ExperimentConfigContextProvider>
-        <div className="flex w-full justify-center">
-          <div className="w-full max-w-xl mx-6">
+        <div className="pt-7 pb-3 fixed h-full w-full overflow-auto">
+          <PageWithBreakpoints>
             <Outlet />
-          </div>
+          </PageWithBreakpoints>
         </div>
       </ExperimentConfigContextProvider>
     </div>
