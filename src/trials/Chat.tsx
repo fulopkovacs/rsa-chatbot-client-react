@@ -2,12 +2,12 @@ import Avatar from "../ui-components/chat/Avatar";
 import ChatMessage from "../ui-components/chat/ChatMessage";
 import { ExperimentConfigContext } from "../ExperimentConfigContext";
 import type { IValue } from "../ExperimentConfigContext";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // TODO: ure real data
 import { chatData } from "../mockData";
 import type { IChatMessages } from "../mockData";
 import React from "react";
-import PageWithBreakpoints from "../ui-components/PageWithBreakpoints";
+import MessageFrame from "../ui-components/chat/MessageFrame";
 
 /*
  * LOGIC:
@@ -17,55 +17,6 @@ import PageWithBreakpoints from "../ui-components/PageWithBreakpoints";
  *   * show images with a delay
  *
  */
-
-interface IMessageFrameProps {
-  displayedMessagesNr: number;
-}
-
-/**
- * A container for the chat messages.
- *
- * @remarks
- * Responsible for making sure that the newest messages are
- * always visible on the bottom.
- */
-const MessageFrame: React.FC<IMessageFrameProps> = ({
-  children,
-  displayedMessagesNr,
-}) => {
-  const parentRef = useRef(null);
-  const childRef = useRef(null);
-
-  useEffect(() => {
-    /**
-     * Scroll to the bottom of the page.
-     *
-     * @remarks
-     * Used to make sure that the most recent message (that is always
-     * on the bottom) is visible.
-     */
-    function scrollToBottom() {
-      if (parentRef.current && childRef.current) {
-        const parentDiv = parentRef.current as HTMLDivElement;
-        const childDiv = childRef.current as HTMLDivElement;
-        parentDiv.scroll({ top: childDiv.scrollHeight, behavior: "smooth" });
-      }
-    }
-
-    scrollToBottom();
-  }, [childRef, parentRef, displayedMessagesNr]);
-
-  return (
-    <div
-      ref={parentRef}
-      className="fixed left-0 top-0 bottom-0 right-0 h-full overflow-auto"
-    >
-      <div ref={childRef} className="pt-9">
-        <PageWithBreakpoints>{children}</PageWithBreakpoints>
-      </div>
-    </div>
-  );
-};
 
 const Chat: React.FC<{}> = ({}) => {
   const [activeMessageIndex, setActiveMessageIndex] = useState(0);
@@ -120,8 +71,13 @@ const Chat: React.FC<{}> = ({}) => {
     ? displayedMessages.map((messageData, i) => {
         const { sender } = messageData;
         const message = messageData.message;
-        const button_label =
-          sender === "user" ? messageData.button_label : undefined;
+        // const button_label =
+        //   sender === "user" ? messageData.button_label : undefined;
+        let button_label, shapes;
+        if (sender === "user") {
+          button_label = messageData.button_label;
+          shapes = messageData.shapes;
+        }
 
         return (
           <React.Fragment key={i}>
@@ -135,6 +91,7 @@ const Chat: React.FC<{}> = ({}) => {
                 i === displayedMessages.length - 1 ? button_label : undefined
               }
               buttonFn={sendMessage}
+              shapes={shapes}
             />
             {((i === 0 && messages.length === 1) || // There's only one message
               i + 1 === messages.length || // This is the last message

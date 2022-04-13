@@ -8,6 +8,11 @@ interface IAvatarProps {
   type: "user" | "bot";
 }
 
+/**
+ * An avatar for the user or the bot in a circle-shaped container.
+ *
+ * @param type - Can be "bot" or "user"
+ */
 const Avatar: React.FC<IAvatarProps> = ({ type }) => {
   const colors = type === "bot" ? "bg-gray-200" : "bg-green-500 text-white";
 

@@ -20,7 +20,7 @@ A chatbot a határozott/határozatlan névelőket nem nagyon ismeri...
  * @param sender - Type of the sender
  * @param message - Text of the message
  */
-interface IBotMessage {
+export interface IBotMessage {
   sender: "bot";
   message?: string;
 }
@@ -46,7 +46,7 @@ interface IShape {
 /*
  * An array of shapes
  */
-type IShapes = IShape[];
+export type IShapes = IShape[];
 
 /**
  * The user's message.
@@ -57,7 +57,7 @@ type IShapes = IShape[];
  * @param select_shape - A Shape selector input
  * @param shapes - Id of the trial
  */
-interface IUserMessage {
+export interface IUserMessage {
   sender: "user";
   message?: string;
   button_label?: string;
@@ -92,7 +92,7 @@ const triangle = {
   blue: generateShapeData("triangle", "blue"),
 };
 
-export type IChatMessages = (IBotMessage | IUserMessage)[]
+export type IChatMessages = (IBotMessage | IUserMessage)[];
 export const chatData: IChatMessages = [
   {
     sender: "bot",
@@ -106,7 +106,7 @@ export const chatData: IChatMessages = [
   },
   {
     sender: "bot",
-    message: "Az kör kék.",
+    message: "A kör kék.",
   },
   {
     sender: "bot",
@@ -126,6 +126,6 @@ export const chatData: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     select_shape: true,
-    shapes: [square.blue, circle.blue, square.green, square.blue],
+    shapes: [circle.green, circle.green, square.blue, circle.blue],
   },
 ];
