@@ -126,6 +126,6 @@ export const chatData: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     select_shape: true,
-    shapes: [circle.green, circle.green, square.blue, circle.blue],
+    shapes: [circle.green, square.blue, circle.blue],
   },
 ];

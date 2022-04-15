@@ -19,7 +19,7 @@ const Avatar: React.FC<IAvatarProps> = ({ type }) => {
   return (
     <div className={type === "bot" ? "flex justify-end" : ""}>
       <div
-        className={`rounded-full w-16 h-16 flex items-center justify-center ${colors} mx-6 mb-8`}
+        className={`rounded-full w-16 h-16 flex items-center justify-center ${colors} mb-8`}
       >
         {type === "bot" ? (
           <img src={botHeadUrl} className="p-3" />

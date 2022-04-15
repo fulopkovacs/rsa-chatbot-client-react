@@ -1,8 +1,6 @@
 import type { IShapes } from "../../mockData";
 import Button from "../Button";
-import Circle from "./Circle";
-import Square from "./Square";
-import Triangle from "./Triangle";
+import { Square, Circle, Triangle } from "./Shapes";
 
 /*
  * TODO:
@@ -40,6 +38,28 @@ const BotMessage: React.FC<IBotMessageProps> = ({ message, commonProps }) => {
   );
 };
 
+const ShapeSelector: React.FC<{ shapes: IShapes }> = ({ shapes }) => {
+  const size = 50;
+  return (
+    <div className="flex flex-wrap gap-5 bg-white p-2 rounded-md">
+      {shapes.map((shapeData, i) => {
+        if (shapeData.shape === "square")
+          return (
+            <Square key={i} fillColor={shapeData.fill_color} size={size} />
+          );
+        if (shapeData.shape === "circle")
+          return (
+            <Circle key={i} fillColor={shapeData.fill_color} size={size} />
+          );
+        if (shapeData.shape === "triangle")
+          return (
+            <Triangle key={i} fillColor={shapeData.fill_color} size={size} />
+          );
+      })}
+    </div>
+  );
+};
+
 const UserMessage: React.FC<IUserMessageProps> = ({
   message,
   buttonLabel,
@@ -50,15 +70,7 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   return (
     <div className={`${commonProps} bg-green-500 text-white`}>
       <p className="w-auto">{message}</p>
-      {shapes &&
-        shapes.map((shapeData, i) => {
-          if (shapeData.shape === "square")
-            return <Square key={i} fillColor={shapeData.fill_color} />;
-          if (shapeData.shape === "circle")
-            return <Circle key={i} fillColor={shapeData.fill_color} />;
-          if (shapeData.shape === "triangle")
-            return <Triangle key={i} fillColor={shapeData.fill_color} />;
-        })}
+      {shapes && <ShapeSelector shapes={shapes} />}
       {buttonLabel && buttonFn && (
         <Button handleClick={buttonFn} type="secondary">
           {buttonLabel}
@@ -76,7 +88,7 @@ const ChatMessage: React.FC<IChatMessageProps> = ({
   shapes,
 }) => {
   const commonProps =
-    "rounded-lg max-w-sm mb-5 px-5 py-6 mx-6 animate-fade-in-bottom font-mono w-max";
+    "rounded-lg max-w-full mb-5 px-5 py-6 animate-fade-in-bottom font-mono w-max";
   return type === "bot" ? (
     <BotMessage message={message} commonProps={commonProps} />
   ) : (
