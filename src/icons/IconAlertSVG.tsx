@@ -4,7 +4,7 @@ interface IIconAlertProps {
   size: number;
 }
 
-const IconAlert: React.FC<IIconAlertProps> = ({ stroke, fill, size }) => {
+const IconAlertSVG: React.FC<IIconAlertProps> = ({ stroke, fill, size }) => {
   return (
     <svg
       width={size}
@@ -30,4 +30,4 @@ const IconAlert: React.FC<IIconAlertProps> = ({ stroke, fill, size }) => {
   );
 };
 
-export default IconAlert;
+export default IconAlertSVG;
