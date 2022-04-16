@@ -5,7 +5,7 @@ import PageWithBreakpoints from "./ui-components/PageWithBreakpoints";
 function App() {
   return (
     <div>
-      <header className="bg-green-500 text-sm text-white text-center py-1 fixed top-0 left-0 right-0 z-10">
+      <header className="bg-green-500 text-sm text-white text-center py-1 fixed top-0 left-0 right-0 z-10 pointer-events-none">
         CogniBot
       </header>
       <ExperimentConfigContextProvider>

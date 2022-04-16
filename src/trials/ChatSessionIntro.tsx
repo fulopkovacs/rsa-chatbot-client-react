@@ -5,7 +5,7 @@ import PageTitle from "../ui-components/PageTitle";
 interface IChatSessionIntroProps {
   bot_image: boolean;
   text: string;
-  condition: number;
+  sessionIndex: number;
   startChatting: () => void;
   button_label: string;
 }

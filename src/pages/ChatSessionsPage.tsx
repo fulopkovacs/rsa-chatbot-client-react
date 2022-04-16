@@ -1,35 +1,56 @@
 import ChatSessionIntro from "../trials/ChatSessionIntro";
 import Chat from "../trials/Chat";
-import { trialsData } from "../mockData";
-import { useState } from "react";
+import { experimentConfig } from "../mockData";
+import { useState, useContext } from "react";
+import { ExperimentConfigContext } from "../ExperimentConfigContext";
+import type { IValue } from "../ExperimentConfigContext";
+import { chatData } from "../mockData";
+import type { IChatMessages } from "../mockData";
+import { useNavigate } from "react-router-dom";
 
 const ChatSessionsPage: React.FC<{}> = () => {
-  const [activeCondition, setActiveCondition] = useState(1);
+  const [activeSessionIndex, setActiveSessionIndex] = useState(0);
   const [introVisible, setIntroVisible] = useState(true);
+
+  const navigate = useNavigate();
+
+  // TODO: Read the message data from the config
+  // const contextValue = useContext(ExperimentConfigContext) as IValue;
+  // const { experimentConfig } = contextValue;
+  // const messages = experimentConfig?.messages;
+  const { sessions } = experimentConfig;
 
   function startChatting() {
     // Hide the trial's intro and start the chat
     setIntroVisible(false);
   }
 
-  function nextCondition() {
-    // Step to next condition
-    setIntroVisible(true);
-    setActiveCondition(activeCondition + 1);
+  function startNextChatSession() {
+    const nextSessionIndex = activeSessionIndex + 1;
+    if (nextSessionIndex > sessions.length - 1) {
+      // TODO: Maybe send the data here?
+      navigate("/outro");
+    } else {
+      setIntroVisible(true);
+      setActiveSessionIndex(nextSessionIndex);
+    }
   }
 
   return (
     <>
       {introVisible ? (
         <ChatSessionIntro
-          bot_image={trialsData[activeCondition - 1]?.intro?.bot_image}
-          text={trialsData[activeCondition - 1]?.intro?.text}
-          button_label={trialsData[activeCondition - 1]?.intro?.button_label}
-          condition={activeCondition}
+          bot_image={sessions[activeSessionIndex]?.intro?.bot_image}
+          text={sessions[activeSessionIndex]?.intro?.text}
+          button_label={sessions[activeSessionIndex]?.intro?.button_label}
+          sessionIndex={activeSessionIndex}
           startChatting={startChatting}
         />
       ) : (
-        <Chat />
+        <Chat
+          messages={sessions[activeSessionIndex].messages}
+          startNextChatSession={startNextChatSession}
+        />
       )}
     </>
   );

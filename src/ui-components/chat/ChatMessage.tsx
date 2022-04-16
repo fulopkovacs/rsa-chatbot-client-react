@@ -117,7 +117,6 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   function submitMessage() {
     // TODO: submit the response to the API
     // get the relevan info from the `ExperimentConfigContext`
-    console.log(selectedShapeValue);
     stepToNextUserMessage();
     setMessageSentStatus(true);
   }

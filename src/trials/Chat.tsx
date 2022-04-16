@@ -1,33 +1,33 @@
 import Avatar from "../ui-components/chat/Avatar";
 import ChatMessage from "../ui-components/chat/ChatMessage";
-import { ExperimentConfigContext } from "../ExperimentConfigContext";
-import type { IValue } from "../ExperimentConfigContext";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // TODO: ure real data
 import { chatData } from "../mockData";
 import type { IChatMessages } from "../mockData";
 import React from "react";
 import MessageFrame from "../ui-components/chat/MessageFrame";
+import Button from "../ui-components/Button";
+import PageButton from "../ui-components/PageButton";
 
-/*
- * LOGIC:
+const text = {
+  startNextChatSession: "Tovább",
+};
+
+/**
+ * Properties of the `Chat` component
  *
- *   * display bot messages with a delay (`delay-150`)
- *   * stop on user messages
- *   * show images with a delay
- *
+ * @param messages - The configuration of the current chat session
+ * @param startNextChatSession - A function to start the next chat session
  */
+interface IChatProps {
+  messages: IChatMessages;
+  startNextChatSession: () => void;
+}
 
-const Chat: React.FC<{}> = ({}) => {
+const Chat: React.FC<IChatProps> = ({ messages, startNextChatSession }) => {
   const [activeMessageIndex, setActiveMessageIndex] = useState(0);
   const [displayedMessages, setDisplayedMessages] = useState<IChatMessages>([]);
   const [nextMessage, setNextMessage] = useState(0);
-
-  // TODO: Read the message data from the config
-  // const contextValue = useContext(ExperimentConfigContext) as IValue;
-  // const { experimentConfig } = contextValue;
-  // const messages = experimentConfig?.messages;
-  const messages = chatData;
 
   useEffect(() => {
     setTimeout(() => {
@@ -102,6 +102,11 @@ const Chat: React.FC<{}> = ({}) => {
   return (
     <MessageFrame displayedMessagesNr={displayedMessages.length}>
       {messageComponents}
+      {displayedMessages.length === messages.length && (
+        <PageButton type="primary" handleClick={startNextChatSession}>
+          {text.startNextChatSession}
+        </PageButton>
+      )}
     </MessageFrame>
   );
 };
