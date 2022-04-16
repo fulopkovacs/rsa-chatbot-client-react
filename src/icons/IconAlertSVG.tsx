@@ -1,13 +1,14 @@
 interface IIconAlertProps {
   stroke: string;
   fill: string;
+  size: number;
 }
 
-const IconAlert: React.FC<IIconAlertProps> = ({ stroke, fill }) => {
+const IconAlert: React.FC<IIconAlertProps> = ({ stroke, fill, size }) => {
   return (
     <svg
-      width="30"
-      height="30"
+      width={size}
+      height={size}
       viewBox="0 0 7.938 7.938"
       xmlns="http://www.w3.org/2000/svg"
     >
