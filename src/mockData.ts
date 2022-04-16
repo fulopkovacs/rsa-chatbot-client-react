@@ -104,6 +104,10 @@ export const chatData: IChatMessages = [
   },
   {
     sender: "bot",
+    message: "Akár erre is gondolhattam volna.",
+  },
+  {
+    sender: "bot",
     message: "A háromszög zöld.",
   },
   {
@@ -124,6 +128,16 @@ export const experimentConfig = {
         Ezekben a kísérletekben ezzel a chatbottal fog beszélgetni.
 
           A chatbot a határozott/határozatlan névelőket nem nagyon ismeri...
+          `,
+        button_label: "Tovább",
+      },
+      messages: chatData,
+    },
+    {
+      intro: {
+        bot_image: false,
+        text: `
+        A következő beszélgetésben a chatbot már nem fog tudni visszajelzéseket adni.
           `,
         button_label: "Tovább",
       },

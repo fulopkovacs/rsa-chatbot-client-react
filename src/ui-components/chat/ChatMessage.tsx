@@ -28,10 +28,11 @@ interface IBotMessageProps {
 
 interface IUserMessageProps {
   commonProps: string;
-  stepToNextUserMessage: () => void;
+  stepToNextUserMessage: (selectedShapeIndex?: number | null) => void;
   message?: string;
   buttonLabel?: string;
   shapes?: IShapes;
+  setSelectedShapeIndex?: () => void;
 }
 
 const BotMessage: React.FC<IBotMessageProps> = ({ message, commonProps }) => {
@@ -108,7 +109,7 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   commonProps,
   shapes,
 }) => {
-  const [selectedShapeValue, setSelectedShapeValue] = useState<number | null>(
+  const [selectedShapeIndex, setSelectedShapeValue] = useState<number | null>(
     null
   );
 
@@ -117,7 +118,7 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   function submitMessage() {
     // TODO: submit the response to the API
     // get the relevan info from the `ExperimentConfigContext`
-    stepToNextUserMessage();
+    stepToNextUserMessage(selectedShapeIndex);
     setMessageSentStatus(true);
   }
 
@@ -135,7 +136,7 @@ const UserMessage: React.FC<IUserMessageProps> = ({
         <Button
           handleClick={submitMessage}
           type="secondary"
-          disabled={shapes && selectedShapeValue === null ? true : false}
+          disabled={shapes && selectedShapeIndex === null ? true : false}
         >
           {buttonLabel}
         </Button>
