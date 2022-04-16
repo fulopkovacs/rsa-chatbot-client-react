@@ -6,7 +6,7 @@ import AuthPage from "./pages/AuthPage";
 import IntroPage from "./pages/IntroPage";
 import ChatSessionsPage from "./pages/ChatSessionsPage";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 function Outro() {
   return <h2>Outro</h2>;
@@ -21,12 +21,12 @@ ReactDOM.render(
           <Route path="intro" element={<IntroPage />} />
           <Route path="chat-sessions" element={<ChatSessionsPage />} />
           <Route path="outro" element={<Outro />} />
-          <Route path="*" element={<AuthPage />} />
+          <Route path="*" element={<Navigate to="/entry" replace={true} />} />
           {/*
            * INFO: This last `Route` makes sure that the `AuthPage` component
            * is displayed when there's no  other match.
            */}
-          <Route index element={<AuthPage />} />
+          <Route index element={<Navigate to="/entry" replace={true} />} />
         </Route>
       </Routes>
     </BrowserRouter>
