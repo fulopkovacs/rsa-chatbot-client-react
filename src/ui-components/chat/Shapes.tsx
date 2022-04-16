@@ -2,7 +2,7 @@
  * The geometric shapes that are used as stimuli.
  */
 
-export const Square: React.FC<{ fillColor: string; size: number }> = ({
+export const SquareSVG: React.FC<{ fillColor: string; size: number }> = ({
   fillColor,
   size,
 }) => {
@@ -18,7 +18,7 @@ export const Square: React.FC<{ fillColor: string; size: number }> = ({
   );
 };
 
-export const Circle: React.FC<{ fillColor: string; size: number }> = ({
+export const CircleSVG: React.FC<{ fillColor: string; size: number }> = ({
   fillColor,
   size,
 }) => {
@@ -34,7 +34,7 @@ export const Circle: React.FC<{ fillColor: string; size: number }> = ({
   );
 };
 
-export const Triangle: React.FC<{ fillColor: string; size: number }> = ({
+export const TriangleSVG: React.FC<{ fillColor: string; size: number }> = ({
   fillColor,
   size,
 }) => {
@@ -53,4 +53,4 @@ export const Triangle: React.FC<{ fillColor: string; size: number }> = ({
   );
 };
 
-export default Triangle;
+export default TriangleSVG;

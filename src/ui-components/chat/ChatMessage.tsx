@@ -1,6 +1,12 @@
+import { useState } from "react";
 import type { IShapes } from "../../mockData";
 import Button from "../Button";
-import { Square, Circle, Triangle } from "./Shapes";
+import ErrorMessage from "../ErrorMessage";
+import { SquareSVG, CircleSVG, TriangleSVG } from "./Shapes";
+
+const text = {
+  shapeNotSelectedAlert: "Válasszon egy formát!",
+};
 
 /*
  * TODO:
@@ -10,8 +16,8 @@ import { Square, Circle, Triangle } from "./Shapes";
 interface IChatMessageProps {
   message?: string;
   type: "bot" | "user";
+  stepToNextUserMessage: () => void;
   buttonLabel?: string;
-  buttonFn: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   shapes?: IShapes;
 }
 
@@ -22,15 +28,15 @@ interface IBotMessageProps {
 
 interface IUserMessageProps {
   commonProps: string;
+  stepToNextUserMessage: () => void;
   message?: string;
   buttonLabel?: string;
-  buttonFn?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   shapes?: IShapes;
 }
 
 const BotMessage: React.FC<IBotMessageProps> = ({ message, commonProps }) => {
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-end font-mono">
       <div className={`${commonProps} bg-gray-200`}>
         <p className="w-auto">{message}</p>
       </div>
@@ -38,41 +44,100 @@ const BotMessage: React.FC<IBotMessageProps> = ({ message, commonProps }) => {
   );
 };
 
-const ShapeSelector: React.FC<{ shapes: IShapes }> = ({ shapes }) => {
+const ShapeSelector: React.FC<{
+  shapes: IShapes;
+  setSelectedShapeValue: React.Dispatch<React.SetStateAction<number | null>>;
+  messageSentStatus: boolean;
+}> = ({ shapes, setSelectedShapeValue, messageSentStatus }) => {
   const size = 50;
+
+  const [selectedShapeIndex, setSelectedShapeIndex] = useState<number | null>(
+    null
+  );
+
+  function selectShape(shapeIndex: number) {
+    // TODO: update the value of the user's message
+    // with the index of the selectedShape
+    setSelectedShapeValue(shapeIndex);
+    setSelectedShapeIndex(shapeIndex);
+  }
+
   return (
-    <div className="flex flex-wrap gap-5 bg-white p-2 rounded-md">
-      {shapes.map((shapeData, i) => {
-        if (shapeData.shape === "square")
+    <>
+      <div
+        className={`flex flex-wrap gap-5 bg-white p-2 rounded-md ${
+          messageSentStatus && "opacity-50"
+        }`}
+      >
+        {shapes.map((shapeData, i) => {
+          const ShapeSVG =
+            shapeData.shape === "square"
+              ? SquareSVG
+              : shapeData.shape === "circle"
+              ? CircleSVG
+              : TriangleSVG;
+
           return (
-            <Square key={i} fillColor={shapeData.fill_color} size={size} />
+            <span
+              key={i}
+              className={`p-1 cursor-pointer ${
+                i === selectedShapeIndex && "border-4 border-green-500"
+              } ${messageSentStatus && "pointer-events-none"}`}
+              onClick={() => selectShape(i)}
+            >
+              {<ShapeSVG fillColor={shapeData.fill_color} size={size} />}
+            </span>
           );
-        if (shapeData.shape === "circle")
-          return (
-            <Circle key={i} fillColor={shapeData.fill_color} size={size} />
-          );
-        if (shapeData.shape === "triangle")
-          return (
-            <Triangle key={i} fillColor={shapeData.fill_color} size={size} />
-          );
-      })}
-    </div>
+        })}
+      </div>
+      <span
+        className={`m-1 transition-opacity ${
+          selectedShapeIndex !== null && "hidden"
+        }`}
+      >
+        <ErrorMessage type="dark">{text.shapeNotSelectedAlert}</ErrorMessage>
+      </span>
+    </>
   );
 };
 
 const UserMessage: React.FC<IUserMessageProps> = ({
   message,
+  stepToNextUserMessage,
   buttonLabel,
-  buttonFn,
   commonProps,
   shapes,
 }) => {
+  const [selectedShapeValue, setSelectedShapeValue] = useState<number | null>(
+    null
+  );
+
+  const [messageSentStatus, setMessageSentStatus] = useState(false);
+
+  function submitMessage() {
+    // TODO: submit the response to the API
+    // get the relevan info from the `ExperimentConfigContext`
+    console.log(selectedShapeValue);
+    stepToNextUserMessage();
+    setMessageSentStatus(true);
+  }
+
   return (
-    <div className={`${commonProps} bg-green-500 text-white`}>
+    <div className={`${commonProps} bg-green-500 text-white transition-all`}>
       <p className="w-auto">{message}</p>
-      {shapes && <ShapeSelector shapes={shapes} />}
-      {buttonLabel && buttonFn && (
-        <Button handleClick={buttonFn} type="secondary">
+      {shapes && (
+        <ShapeSelector
+          shapes={shapes}
+          messageSentStatus={messageSentStatus}
+          setSelectedShapeValue={setSelectedShapeValue}
+        />
+      )}
+      {buttonLabel && messageSentStatus === false && (
+        <Button
+          handleClick={submitMessage}
+          type="secondary"
+          disabled={shapes && selectedShapeValue === null ? true : false}
+        >
           {buttonLabel}
         </Button>
       )}
@@ -84,20 +149,20 @@ const ChatMessage: React.FC<IChatMessageProps> = ({
   message,
   type,
   buttonLabel,
-  buttonFn,
+  stepToNextUserMessage,
   shapes,
 }) => {
   const commonProps =
-    "rounded-lg max-w-full mb-5 px-5 py-6 animate-fade-in-bottom font-mono w-max";
+    "rounded-lg max-w-full mb-5 px-5 py-6 animate-fade-in-bottom w-max";
   return type === "bot" ? (
     <BotMessage message={message} commonProps={commonProps} />
   ) : (
     <UserMessage
       message={message}
       buttonLabel={buttonLabel}
-      buttonFn={buttonFn}
       commonProps={commonProps}
       shapes={shapes}
+      stepToNextUserMessage={stepToNextUserMessage}
     />
   );
 };

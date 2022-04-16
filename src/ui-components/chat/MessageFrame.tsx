@@ -43,6 +43,7 @@ const MessageFrame: React.FC<IMessageFrameProps> = ({
       ref={parentRef}
       className="fixed left-0 top-0 bottom-0 right-0 h-full overflow-auto"
     >
+      <div className="fixed z-10 top-0 left-0  right-0 bottom-0 bg-gradient-to-b from-white opacity-40 pointer-events-none"></div>
       <div ref={childRef} className="pt-9 px-5">
         <PageWithBreakpoints>{children}</PageWithBreakpoints>
       </div>

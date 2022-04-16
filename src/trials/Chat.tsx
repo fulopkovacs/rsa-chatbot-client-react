@@ -62,10 +62,6 @@ const Chat: React.FC<{}> = ({}) => {
   /**
    * Send the user's message
    */
-  function sendMessage() {
-    // Step to next user message
-    stepToNextUserMessage();
-  }
 
   const messageComponents = displayedMessages
     ? displayedMessages.map((messageData, i) => {
@@ -90,7 +86,7 @@ const Chat: React.FC<{}> = ({}) => {
                 // after the message is sent.
                 i === displayedMessages.length - 1 ? button_label : undefined
               }
-              buttonFn={sendMessage}
+              stepToNextUserMessage={stepToNextUserMessage}
               shapes={shapes}
             />
             {((i === 0 && messages.length === 1) || // There's only one message

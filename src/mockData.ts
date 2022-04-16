@@ -60,7 +60,7 @@ export type IShapes = IShape[];
 export interface IUserMessage {
   sender: "user";
   message?: string;
-  button_label?: string;
+  button_label: string;
   select_shape?: boolean;
   shapes?: IShapes;
 }
