@@ -1,9 +1,9 @@
-import TrialIntro from "../trials/TrialIntro";
+import ChatSessionIntro from "../trials/ChatSessionIntro";
 import Chat from "../trials/Chat";
 import { trialsData } from "../mockData";
 import { useState } from "react";
 
-const TrialsPage: React.FC<{}> = () => {
+const ChatSessionsPage: React.FC<{}> = () => {
   const [activeCondition, setActiveCondition] = useState(1);
   const [introVisible, setIntroVisible] = useState(true);
 
@@ -21,7 +21,7 @@ const TrialsPage: React.FC<{}> = () => {
   return (
     <>
       {introVisible ? (
-        <TrialIntro
+        <ChatSessionIntro
           bot_image={trialsData[activeCondition - 1]?.intro?.bot_image}
           text={trialsData[activeCondition - 1]?.intro?.text}
           button_label={trialsData[activeCondition - 1]?.intro?.button_label}
@@ -35,4 +35,4 @@ const TrialsPage: React.FC<{}> = () => {
   );
 };
 
-export default TrialsPage;
+export default ChatSessionsPage;

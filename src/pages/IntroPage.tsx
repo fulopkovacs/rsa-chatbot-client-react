@@ -23,7 +23,7 @@ const IntroPage: React.FC<{}> = () => {
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate("/trials");
+    navigate("/chat-sessions");
   }
 
   return (

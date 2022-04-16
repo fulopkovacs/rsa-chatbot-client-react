@@ -2,7 +2,7 @@ import botImageUrl from "../img/bot-illustration.png";
 import PageButton from "../ui-components/PageButton";
 import PageTitle from "../ui-components/PageTitle";
 
-interface TrialIntroProps {
+interface IChatSessionIntroProps {
   bot_image: boolean;
   text: string;
   condition: number;
@@ -10,7 +10,7 @@ interface TrialIntroProps {
   button_label: string;
 }
 
-const TrialIntro: React.FC<TrialIntroProps> = ({
+const ChatSessionIntro: React.FC<IChatSessionIntroProps> = ({
   bot_image,
   text,
   startChatting,
@@ -24,10 +24,10 @@ const TrialIntro: React.FC<TrialIntroProps> = ({
       )}
       <p className="whitespace-pre-wrap">{text}</p>
       <PageButton type="primary" handleClick={startChatting}>
-      {button_label}
+        {button_label}
       </PageButton>
     </>
   );
 };
 
-export default TrialIntro;
+export default ChatSessionIntro;

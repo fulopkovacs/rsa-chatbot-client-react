@@ -4,7 +4,7 @@ import "./index.css";
 import App from "./App";
 import AuthPage from "./pages/AuthPage";
 import IntroPage from "./pages/IntroPage";
-import ChatSessions from "./pages/Trials";
+import ChatSessionsPage from "./pages/ChatSessionsPage";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
@@ -19,7 +19,7 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route path="entry" element={<AuthPage />} />
           <Route path="intro" element={<IntroPage />} />
-          <Route path="chat-sessions" element={<ChatSessions />} />
+          <Route path="chat-sessions" element={<ChatSessionsPage />} />
           <Route path="outro" element={<Outro />} />
           <Route path="*" element={<AuthPage />} />
           {/*
