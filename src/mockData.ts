@@ -144,4 +144,5 @@ export const experimentConfig = {
       messages: chatData,
     },
   ],
+  outro: { title: 'Köszönjük a részvételt!', body: 'Az adatokat elmentettük, most már be lehet zárni ezt a böngészőlapot.'}
 };

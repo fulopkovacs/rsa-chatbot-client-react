@@ -5,12 +5,9 @@ import App from "./App";
 import AuthPage from "./pages/AuthPage";
 import IntroPage from "./pages/IntroPage";
 import ChatSessionsPage from "./pages/ChatSessionsPage";
+import Outro from "./pages/Outro";
 
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
-function Outro() {
-  return <h2>Outro</h2>;
-}
 
 ReactDOM.render(
   <React.StrictMode>
