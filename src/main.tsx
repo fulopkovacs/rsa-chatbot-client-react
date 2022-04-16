@@ -19,8 +19,9 @@ ReactDOM.render(
         <Route path="/" element={<App />}>
           <Route path="entry" element={<AuthPage />} />
           <Route path="intro" element={<IntroPage />} />
-          <Route path="trials" element={<TrialsPage />} />
+          <Route path="chat-sessions" element={<TrialsPage />} />
           <Route path="outro" element={<Outro />} />
+          <Route path="*" element={<AuthPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
