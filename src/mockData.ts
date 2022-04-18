@@ -118,9 +118,10 @@ export const chatData: IChatMessages = [
   },
 ];
 // TODO: do not use this data when the API endpoints are ready
-export type IExperimentConfig = typeof experimentConfig
+export type IExperimentConfig = typeof experimentConfig;
 // export type IExperimentConfig = typeof experimentConfig & {token:string};
 export const experimentConfig = {
+  condition: 1,
   intro: {
     title: "Üdvözöljük a kísérletben!",
     body: `

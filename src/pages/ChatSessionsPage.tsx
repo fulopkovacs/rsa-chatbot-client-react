@@ -5,6 +5,7 @@ import { useState, useContext, useReducer, useEffect } from "react";
 import { ExperimentConfigContext } from "../ExperimentConfigContext";
 import type { IValue } from "../ExperimentConfigContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 /**
  * The user's message + relevant info
@@ -70,8 +71,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
 
   useEffect(() => {
     if (!sessions) navigate("/entry");
-  });
-
+  }, []);
   /**
    * Start the chat.
    */
@@ -95,7 +95,44 @@ const ChatSessionsPage: React.FC<{}> = () => {
       const nextSessionIndex = activeSessionIndex + 1;
       if (nextSessionIndex > sessions.length - 1) {
         // TODO: Maybe send the data here?
-        navigate("/outro");
+        const access_token = localStorage.getItem("access_token");
+
+        if (access_token) {
+          const requestConfig = {
+            headers: { Authorization: `Bearer ${access_token}` },
+          };
+          // TODO: Use an environmental variable for the api config
+          let apiBaseUrl: string;
+
+          if (process.env.NODE_ENV === "development") {
+            apiBaseUrl = "http://localhost:8000";
+          } else {
+            apiBaseUrl = "";
+          }
+
+          axios
+            .post(
+              apiBaseUrl + "/chat/user-session",
+              {
+                sessions: sessionsHistory,
+                entry_code: 1 /*doesn't matter, it'll be obtained from the token */,
+                condition: experimentConfig.condition,
+                timestamp: Date.now(),
+              },
+              requestConfig
+            )
+            .then((resp) => {
+              console.log(resp.data);
+              navigate("/outro");
+            })
+            .catch((err) => {
+              console.error(err);
+              navigate("/outro");
+            });
+        } else {
+          console.error("Access token was not found in the localStorage");
+          navigate("/outro");
+        }
       } else {
         setIntroVisible(true);
         setActiveSessionIndex(nextSessionIndex);

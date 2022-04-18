@@ -16,7 +16,6 @@ const text = {
 function AuthPage() {
   const [accessCode, setAcessCode] = useState("");
   const [errorMessageVisible, setErrorMessageVisible] = useState(false);
-  const [access_token, setAccessToken] = useState<string | null>(null);
 
   const contextValue = useContext(ExperimentConfigContext) as IValue;
   const { setExperimentConfig } = contextValue;
@@ -45,7 +44,6 @@ function AuthPage() {
       .post(apiBaseUrl + "/entry/get-token?code=" + accessCode.toString())
       .then((resp) => {
         const access_token: string = resp.data.access_token;
-        setAccessToken(access_token);
         localStorage.setItem("access_token", access_token);
         const requestConfig = {
           headers: { Authorization: `Bearer ${access_token}` },

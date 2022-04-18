@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import PageButton from "../ui-components/PageButton";
 import PageTitle from "../ui-components/PageTitle";
 import { ExperimentConfigContext } from "../ExperimentConfigContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 const IntroPage: React.FC<{}> = () => {
   const contextValue = useContext(ExperimentConfigContext);
@@ -11,6 +11,11 @@ const IntroPage: React.FC<{}> = () => {
   function handleClick() {
     navigate("/chat-sessions");
   }
+
+  // TODO: Find a better way to redirect to "/entry" if the token is not set
+  useEffect(() => {
+    if (!contextValue?.experimentConfig) navigate("/entry");
+  });
 
   const intro = contextValue?.experimentConfig?.intro || {
     title: "",
