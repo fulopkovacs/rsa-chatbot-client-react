@@ -4,7 +4,7 @@ import ErrorMessage from "../ui-components/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 import { ExperimentConfigContext, IValue } from "../ExperimentConfigContext";
 import PageTitle from "../ui-components/PageTitle";
-import { experimentConfig } from "../mockData";
+import axios from "axios";
 
 const text = {
   instruction: "Kérjük adja meg a kísérlethez kapott kódot!",
@@ -16,6 +16,7 @@ const text = {
 function AuthPage() {
   const [accessCode, setAcessCode] = useState("");
   const [errorMessageVisible, setErrorMessageVisible] = useState(false);
+  const [access_token, setAccessToken] = useState<string | null>(null);
 
   const contextValue = useContext(ExperimentConfigContext) as IValue;
   const { setExperimentConfig } = contextValue;
@@ -31,16 +32,39 @@ function AuthPage() {
     // Show the error message if the code field is empty
     if (!accessCode) return setErrorMessageVisible(true);
 
-    // TODO: Try to load the config that belongs to the code
-    let err = false;
-    if (err) {
-      setErrorMessageVisible(true);
+    // TODO: Use an environmental variable for the api config
+    let apiBaseUrl: string;
+
+    if (process.env.NODE_ENV === "development") {
+      apiBaseUrl = "http://localhost:8000";
     } else {
-      // 1. set config
-      setExperimentConfig(experimentConfig);
-      // 2. redirect to intro
-      navigate("/intro");
+      apiBaseUrl = "";
     }
+
+    axios
+      .post(apiBaseUrl + "/entry/get-token?code=" + accessCode.toString())
+      .then((resp) => {
+        const access_token: string = resp.data.access_token;
+        setAccessToken(access_token);
+        localStorage.setItem("access_token", access_token);
+        const requestConfig = {
+          headers: { Authorization: `Bearer ${access_token}` },
+        };
+
+        axios
+          .get(apiBaseUrl + "/entry/experiment-config", requestConfig)
+          .then((resp2) => {
+            console.log(resp2.data);
+            // 1. set config
+            setExperimentConfig(resp2.data);
+            // 2. redirect to intro
+            navigate("/intro");
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        setErrorMessageVisible(true);
+      });
   }
 
   return (

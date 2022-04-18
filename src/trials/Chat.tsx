@@ -2,7 +2,7 @@ import Avatar from "../ui-components/chat/Avatar";
 import ChatMessage from "../ui-components/chat/ChatMessage";
 import { useEffect, useState } from "react";
 // TODO: ure real data
-import type { IChatMessages } from "../mockData";
+import { generateShapeData, IChatMessages } from "../mockData";
 import React from "react";
 import MessageFrame from "../ui-components/chat/MessageFrame";
 import PageButton from "../ui-components/PageButton";
@@ -122,7 +122,10 @@ const Chat: React.FC<IChatProps> = ({
                 i === displayedMessages.length - 1 ? button_label : undefined
               }
               stepToNextUserMessage={stepToNextUserMessage}
-              shapes={shapes}
+              shapes={
+                shapes &&
+                shapes.map((shape) => generateShapeData(...shape.split(".")))
+              }
             />
             {((i === 0 && messages.length === 1) || // There's only one message
               i + 1 === messages.length || // This is the last message

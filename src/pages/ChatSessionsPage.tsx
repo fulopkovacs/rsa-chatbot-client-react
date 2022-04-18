@@ -1,7 +1,7 @@
 import ChatSessionIntro from "../trials/ChatSessionIntro";
 import Chat from "../trials/Chat";
-import { experimentConfig, IShapes } from "../mockData";
-import { useState, useContext, useReducer } from "react";
+import { IShapes } from "../mockData";
+import { useState, useContext, useReducer, useEffect } from "react";
 import { ExperimentConfigContext } from "../ExperimentConfigContext";
 import type { IValue } from "../ExperimentConfigContext";
 import { useNavigate } from "react-router-dom";
@@ -64,10 +64,13 @@ const ChatSessionsPage: React.FC<{}> = () => {
   const navigate = useNavigate();
 
   // TODO: Read the message data from the config
-  // const contextValue = useContext(ExperimentConfigContext) as IValue;
-  // const { experimentConfig } = contextValue;
-  // const messages = experimentConfig?.messages;
-  const { sessions } = experimentConfig;
+  const contextValue = useContext(ExperimentConfigContext) as IValue;
+  const { experimentConfig } = contextValue;
+  const sessions = experimentConfig?.sessions;
+
+  useEffect(() => {
+    if (!sessions) navigate("/entry");
+  });
 
   /**
    * Start the chat.
@@ -82,6 +85,8 @@ const ChatSessionsPage: React.FC<{}> = () => {
    * if there are no sessions left.
    */
   function goToNextChatSession() {
+    // TODO: Remove this return statement and validate on the route level
+    if (!sessions) return;
     // TODO: Make the button disabled if the user can't go to the next session
     if (
       sessions[activeSessionIndex].messages.filter((m) => m.sender === "user")
@@ -90,7 +95,6 @@ const ChatSessionsPage: React.FC<{}> = () => {
       const nextSessionIndex = activeSessionIndex + 1;
       if (nextSessionIndex > sessions.length - 1) {
         // TODO: Maybe send the data here?
-        console.log(sessionsHistory);
         navigate("/outro");
       } else {
         setIntroVisible(true);
@@ -101,21 +105,25 @@ const ChatSessionsPage: React.FC<{}> = () => {
 
   return (
     <>
-      {introVisible ? (
-        <ChatSessionIntro
-          bot_image={sessions[activeSessionIndex]?.intro?.bot_image}
-          text={sessions[activeSessionIndex]?.intro?.text}
-          button_label={sessions[activeSessionIndex]?.intro?.button_label}
-          sessionIndex={activeSessionIndex}
-          startChatting={startChatSession}
-        />
-      ) : (
-        <Chat
-          messages={sessions[activeSessionIndex].messages}
-          goToNextChatSession={goToNextChatSession}
-          dispatch={dispatch}
-          sessionIndex={activeSessionIndex}
-        />
+      {experimentConfig && sessions && (
+        <>
+          {introVisible ? (
+            <ChatSessionIntro
+              bot_image={sessions[activeSessionIndex]?.intro?.bot_image}
+              text={sessions[activeSessionIndex]?.intro?.text}
+              button_label={sessions[activeSessionIndex]?.intro?.button_label}
+              sessionIndex={activeSessionIndex}
+              startChatting={startChatSession}
+            />
+          ) : (
+            <Chat
+              messages={sessions[activeSessionIndex].messages}
+              goToNextChatSession={goToNextChatSession}
+              dispatch={dispatch}
+              sessionIndex={activeSessionIndex}
+            />
+          )}
+        </>
       )}
     </>
   );

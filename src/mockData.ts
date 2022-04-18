@@ -46,7 +46,7 @@ export interface IUserMessage {
   message?: string;
   button_label: string;
   select_shape?: boolean;
-  shapes?: IShapes;
+  shapes?: string;
 }
 
 /*
@@ -56,7 +56,7 @@ export interface IUserMessage {
  * @param color - Color of the shape
  *
  */
-const generateShapeData = (
+export const generateShapeData = (
   shape: "square" | "circle" | "triangle",
   color: IShapeColors
 ) => ({ shape: shape, fill_color: color });
@@ -118,8 +118,25 @@ export const chatData: IChatMessages = [
   },
 ];
 // TODO: do not use this data when the API endpoints are ready
-export type IExperimentConfig = typeof experimentConfig;
+export type IExperimentConfig = typeof experimentConfig
+// export type IExperimentConfig = typeof experimentConfig & {token:string};
 export const experimentConfig = {
+  intro: {
+    title: "Üdvözöljük a kísérletben!",
+    body: `
+Tisztelt Résztvevő!
+
+Ebben a kísérletben egy chatbottal való beszélgetésre hívjuk meg Önt. A chatbot és Ön egy játékot fog játszani melyben az egyik fél megpróbál leírni egy dolgot, a másik fél pedig kitalálni azt. Több helyzet is lehet, a pontos szabályokat mindig az adott helyzet előtt ismertetjük.
+
+Az Ön és a chatbot által adott válaszokat anonimizálva mentjük el. Az adatokat Kovács Fülöp, a Budapest Műszaki Egyetem Számítógépes és Kognitív Idegtudományok MSC
+szakra járó hallgatója fogja felhasználni szakdolgozatában.
+
+A kísérlet körülbelül 15 percet vesz igénybe.
+
+Jelentkezését köszönjünk, kérjük nyomja meg a lent látható "START" gombot, amennyiben részt szeretne venni a  kísérletben, ellenkező esetben pedig zárja be ezt a böngészőlapot!
+  `,
+    start_button_label: "START",
+  },
   sessions: [
     {
       intro: {
@@ -144,5 +161,8 @@ export const experimentConfig = {
       messages: chatData,
     },
   ],
-  outro: { title: 'Köszönjük a részvételt!', body: 'Az adatokat elmentettük, most már be lehet zárni ezt a böngészőlapot.'}
+  outro: {
+    title: "Köszönjük a részvételt!",
+    body: "Az adatokat elmentettük, most már be lehet zárni ezt a böngészőlapot.",
+  },
 };
