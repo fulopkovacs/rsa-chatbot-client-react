@@ -12,7 +12,12 @@ export interface IBotMessage {
 /**
  * Possible colors of the shapes
  */
-type IShapeColors = "blue" | "green";
+export type IShapeColors = "blue" | "green";
+
+/**
+ * Possible shapes of the geometric shapes
+ */
+export type IShapesShape = "square" | "circle" | "triangle";
 
 /**
  * The data of a geometric shape
@@ -46,7 +51,7 @@ export interface IUserMessage {
   message?: string;
   button_label: string;
   select_shape?: boolean;
-  shapes?: string;
+  shapes?: string[];
 }
 
 /*
@@ -100,7 +105,7 @@ export const chatData: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     select_shape: true,
-    shapes: [square.blue, circle.blue, square.green, square.blue],
+    shapes: ["square.blue", "circle.blue", "square.green", "square.blue"],
   },
   {
     sender: "bot",
@@ -114,7 +119,7 @@ export const chatData: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     select_shape: true,
-    shapes: [circle.green, square.blue, circle.blue],
+    shapes: ["circle.green", " square.blue", "circle.blue"],
   },
 ];
 // TODO: do not use this data when the API endpoints are ready

@@ -2,7 +2,12 @@ import Avatar from "../ui-components/chat/Avatar";
 import ChatMessage from "../ui-components/chat/ChatMessage";
 import { useEffect, useState } from "react";
 // TODO: ure real data
-import { generateShapeData, IChatMessages } from "../mockData";
+import {
+  generateShapeData,
+  IChatMessages,
+  IShapeColors,
+  IShapesShape,
+} from "../mockData";
 import React from "react";
 import MessageFrame from "../ui-components/chat/MessageFrame";
 import PageButton from "../ui-components/PageButton";
@@ -124,7 +129,13 @@ const Chat: React.FC<IChatProps> = ({
               stepToNextUserMessage={stepToNextUserMessage}
               shapes={
                 shapes &&
-                shapes.map((shape) => generateShapeData(...shape.split(".")))
+                shapes.map((shape) => {
+                  const shape_args = shape.split(".") as [
+                    IShapesShape,
+                    IShapeColors
+                  ];
+                  return generateShapeData(shape_args[0], shape_args[1]);
+                })
               }
             />
             {((i === 0 && messages.length === 1) || // There's only one message
