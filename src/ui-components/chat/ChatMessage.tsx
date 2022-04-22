@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { IShapes } from "../../mockData";
+import type { IShapeObject } from "../../mockData";
 import Button from "../Button";
 import ErrorMessage from "../ErrorMessage";
 import { SquareSVG, CircleSVG, TriangleSVG } from "./Shapes";
@@ -18,7 +18,7 @@ interface IChatMessageProps {
   type: "bot" | "user";
   stepToNextUserMessage: () => void;
   buttonLabel?: string;
-  shapes?: IShapes;
+  shapes?: IShapeObject[];
 }
 
 interface IBotMessageProps {
@@ -31,7 +31,7 @@ interface IUserMessageProps {
   stepToNextUserMessage: (selectedShapeIndex?: number | null) => void;
   message?: string;
   buttonLabel?: string;
-  shapes?: IShapes;
+  shapes?: IShapeObject[];
   setSelectedShapeIndex?: () => void;
 }
 
@@ -46,7 +46,7 @@ const BotMessage: React.FC<IBotMessageProps> = ({ message, commonProps }) => {
 };
 
 const ShapeSelector: React.FC<{
-  shapes: IShapes;
+  shapes: IShapeObject[];
   setSelectedShapeValue: React.Dispatch<React.SetStateAction<number | null>>;
   messageSentStatus: boolean;
 }> = ({ shapes, setSelectedShapeValue, messageSentStatus }) => {

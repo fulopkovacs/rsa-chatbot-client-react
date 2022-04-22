@@ -20,22 +20,28 @@ export type IShapeColors = "blue" | "green";
 export type IShapesShape = "square" | "circle" | "triangle";
 
 /**
- * The data of a geometric shape
+ * A geometric shape represented as an object
  *
  * @param fill_color - Fill color of the shape
  * @param stroke_color - Stroke color of the shape
  * @param shape - Shape of the geomteric shape
  */
-interface IShape {
+export interface IShapeObject {
   fill_color: IShapeColors;
   stroke_color?: IShapeColors;
   shape: "triangle" | "circle" | "square";
 }
 
-/*
- * An array of shapes
+/**
+ * A geometric shape represented as a string
  */
-export type IShapes = IShape[];
+export type IShapeString =
+  | "square.blue"
+  | "square.green"
+  | "circle.blue"
+  | "circle.green"
+  | "triangle.blue"
+  | "triangle.green";
 
 /**
  * The user's message.
@@ -51,7 +57,7 @@ export interface IUserMessage {
   message?: string;
   button_label: string;
   select_shape?: boolean;
-  shapes?: string[];
+  shapes?: IShapeString[];
 }
 
 /*
@@ -65,21 +71,6 @@ export const generateShapeData = (
   shape: "square" | "circle" | "triangle",
   color: IShapeColors
 ) => ({ shape: shape, fill_color: color });
-
-const square = {
-  green: generateShapeData("square", "green"),
-  blue: generateShapeData("square", "blue"),
-};
-
-const circle = {
-  green: generateShapeData("circle", "green"),
-  blue: generateShapeData("circle", "blue"),
-};
-
-const triangle = {
-  green: generateShapeData("triangle", "green"),
-  blue: generateShapeData("triangle", "blue"),
-};
 
 export type IChatMessages = (IBotMessage | IUserMessage)[];
 export const chatData: IChatMessages = [
@@ -119,7 +110,7 @@ export const chatData: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     select_shape: true,
-    shapes: ["circle.green", " square.blue", "circle.blue"],
+    shapes: ["circle.green", "square.blue", "circle.blue"],
   },
 ];
 // TODO: do not use this data when the API endpoints are ready

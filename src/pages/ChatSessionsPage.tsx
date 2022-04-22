@@ -1,6 +1,6 @@
 import ChatSessionIntro from "../trials/ChatSessionIntro";
 import Chat from "../trials/Chat";
-import { IShapes } from "../mockData";
+import { IShapeString } from "../mockData";
 import { useState, useContext, useReducer, useEffect } from "react";
 import { ExperimentConfigContext } from "../ExperimentConfigContext";
 import type { IValue } from "../ExperimentConfigContext";
@@ -19,7 +19,7 @@ export interface ISessionMessage {
   message?: string;
   selectedShape?: number;
   botMessage?: string;
-  shapeOptions?: IShapes;
+  shapeOptions?: IShapeString[];
 }
 
 /**
