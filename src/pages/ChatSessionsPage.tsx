@@ -140,6 +140,8 @@ const ChatSessionsPage: React.FC<{}> = () => {
     }
   }
 
+  const title = sessions && sessions[activeSessionIndex].intro?.title;
+
   return (
     <>
       {experimentConfig && sessions && (
@@ -151,6 +153,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
               button_label={sessions[activeSessionIndex]?.intro?.button_label}
               sessionIndex={activeSessionIndex}
               startChatting={startChatSession}
+              title={title}
             />
           ) : (
             <Chat

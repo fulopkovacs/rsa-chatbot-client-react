@@ -137,6 +137,7 @@ Jelentkezését köszönjünk, kérjük nyomja meg a lent látható "START" gomb
   sessions: [
     {
       intro: {
+        title: 'Bemutatkozik a bot',
         bot_image: true,
         text: `
         Ezekben a kísérletekben ezzel a chatbottal fog beszélgetni.

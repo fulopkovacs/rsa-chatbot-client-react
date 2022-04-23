@@ -8,6 +8,7 @@ interface IChatSessionIntroProps {
   sessionIndex: number;
   startChatting: () => void;
   button_label: string;
+  title?: string;
 }
 
 const ChatSessionIntro: React.FC<IChatSessionIntroProps> = ({
@@ -15,10 +16,11 @@ const ChatSessionIntro: React.FC<IChatSessionIntroProps> = ({
   text,
   startChatting,
   button_label,
+  title,
 }) => {
   return (
     <>
-      <PageTitle>Bemutatkozik a bot</PageTitle>
+      <PageTitle>{title}</PageTitle>
       {bot_image && (
         <img className="text-center m-auto max-w-xs" src={botImageUrl} />
       )}
