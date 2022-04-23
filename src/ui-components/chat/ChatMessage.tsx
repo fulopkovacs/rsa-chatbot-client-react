@@ -1,5 +1,12 @@
 import { useState } from "react";
-import type { IShapeObject } from "../../mockData";
+import {
+  generateShapeData,
+  IBotMessage,
+  IShapeColors,
+  IShapeObject,
+  IShapesShape,
+  IUserMessage,
+} from "../../mockData";
 import Button from "../Button";
 import ErrorMessage from "../ErrorMessage";
 import { SquareSVG, CircleSVG, TriangleSVG } from "./Shapes";
@@ -14,28 +21,27 @@ const text = {
  * to compose `IChatMessageProps`
  */
 interface IChatMessageProps {
-  message?: string;
-  type: "bot" | "user";
+  messageData: IBotMessage | IUserMessage;
   stepToNextUserMessage: () => void;
-  buttonLabel?: string;
-  shapes?: IShapeObject[];
 }
 
 interface IBotMessageProps {
   commonProps: string;
-  message?: string;
+  messageData: IBotMessage;
 }
 
 interface IUserMessageProps {
   commonProps: string;
   stepToNextUserMessage: (selectedShapeIndex?: number | null) => void;
-  message?: string;
-  buttonLabel?: string;
-  shapes?: IShapeObject[];
   setSelectedShapeIndex?: () => void;
+  messageData: IUserMessage;
 }
 
-const BotMessage: React.FC<IBotMessageProps> = ({ message, commonProps }) => {
+const BotMessage: React.FC<IBotMessageProps> = ({
+  messageData,
+  commonProps,
+}) => {
+  const { message } = messageData;
   return (
     <div className="flex justify-end font-mono">
       <div className={`${commonProps} bg-gray-200`}>
@@ -103,12 +109,11 @@ const ShapeSelector: React.FC<{
 };
 
 const UserMessage: React.FC<IUserMessageProps> = ({
-  message,
+  messageData,
   stepToNextUserMessage,
-  buttonLabel,
   commonProps,
-  shapes,
 }) => {
+  const { message, shapes, button_label } = messageData;
   const [selectedShapeIndex, setSelectedShapeValue] = useState<number | null>(
     null
   );
@@ -127,18 +132,21 @@ const UserMessage: React.FC<IUserMessageProps> = ({
       <p className="w-auto">{message}</p>
       {shapes && (
         <ShapeSelector
-          shapes={shapes}
+          shapes={shapes.map((shape) => {
+            const shapeArgs = shape.split(".") as [IShapesShape, IShapeColors];
+            return generateShapeData(...shapeArgs);
+          })}
           messageSentStatus={messageSentStatus}
           setSelectedShapeValue={setSelectedShapeValue}
         />
       )}
-      {buttonLabel && messageSentStatus === false && (
+      {button_label && messageSentStatus === false && (
         <Button
           handleClick={submitMessage}
           type="secondary"
           disabled={shapes && selectedShapeIndex === null ? true : false}
         >
-          {buttonLabel}
+          {button_label}
         </Button>
       )}
     </div>
@@ -146,22 +154,18 @@ const UserMessage: React.FC<IUserMessageProps> = ({
 };
 
 const ChatMessage: React.FC<IChatMessageProps> = ({
-  message,
-  type,
-  buttonLabel,
   stepToNextUserMessage,
-  shapes,
+  messageData,
 }) => {
+  const { sender } = messageData;
   const commonProps =
     "rounded-lg max-w-full mb-5 px-5 py-6 animate-fade-in-bottom w-max";
-  return type === "bot" ? (
-    <BotMessage message={message} commonProps={commonProps} />
+  return sender === "bot" ? (
+    <BotMessage messageData={messageData} commonProps={commonProps} />
   ) : (
     <UserMessage
-      message={message}
-      buttonLabel={buttonLabel}
+      messageData={messageData}
       commonProps={commonProps}
-      shapes={shapes}
       stepToNextUserMessage={stepToNextUserMessage}
     />
   );

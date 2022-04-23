@@ -41,19 +41,20 @@ export interface IAction {
 function reducer(state: ISessionsHistory, action: IAction) {
   const { type, sessionIndex, sessionMessage } = action;
 
-  if (type === "updateSession") {
-    // Create a new session history if it doesn't exist
-    if (state.length - 1 < sessionIndex) {
-      state.push([]);
-    }
+  switch (type) {
+    case "updateSession":
+      // Create a new session history if it doesn't exist
+      if (state.length - 1 < sessionIndex) {
+        state.push([]);
+      }
 
-    // Push the message data to the session history
-    state[sessionIndex].push(sessionMessage);
+      // Push the message data to the session history
+      state[sessionIndex].push(sessionMessage);
 
-    return state;
-  } else {
-    console.error(`Uknown action type: ${action.type}`);
-    return state;
+      return state;
+    default:
+      console.error(`Uknown action type: ${action.type}`);
+      return state;
   }
 }
 

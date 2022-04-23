@@ -106,37 +106,19 @@ const Chat: React.FC<IChatProps> = ({
   const messageComponents = displayedMessages
     ? displayedMessages.map((messageData, i) => {
         const { sender } = messageData;
-        const message = messageData.message;
-        // const button_label =
-        //   sender === "user" ? messageData.button_label : undefined;
-        let button_label, shapes;
-        if (sender === "user") {
-          button_label = messageData.button_label;
-          shapes = messageData.shapes;
+
+        if (
+          "button_label" in messageData &&
+          i !== displayedMessages.length - 1
+        ) {
+          messageData.button_label = undefined;
         }
 
         return (
           <React.Fragment key={i}>
             <ChatMessage
-              type={sender}
-              message={message}
-              buttonLabel={
-                // Do not display a button if it's not the last message of the user
-                // TODO: Use a proper solution for making the button dissappear
-                // after the message is sent.
-                i === displayedMessages.length - 1 ? button_label : undefined
-              }
+              messageData={messageData}
               stepToNextUserMessage={stepToNextUserMessage}
-              shapes={
-                shapes &&
-                shapes.map((shape) => {
-                  const shape_args = shape.split(".") as [
-                    IShapesShape,
-                    IShapeColors
-                  ];
-                  return generateShapeData(shape_args[0], shape_args[1]);
-                })
-              }
             />
             {((i === 0 && messages.length === 1) || // There's only one message
               i + 1 === messages.length || // This is the last message
