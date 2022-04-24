@@ -97,7 +97,7 @@ const TwoOptionsSelector: React.FC<{
           <button
             className={`border border-white p-2 ${
               selectedOptionIndex === i && "bg-white text-green-500"
-            }`}
+            } ${messageSentStatus && "pointer-events-none opacity-50"}`}
             key={i}
             onClick={() => {
               setSelectedOptionIndex(i);

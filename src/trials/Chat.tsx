@@ -103,7 +103,7 @@ const Chat: React.FC<IChatProps> = ({
         let botAnswer: number;
         // Find the previous bot message that contains
         // a correct answer, and evaluate the user's answer
-        for (let i = activeMessageIndex - 1; i > 0; i--) {
+        for (let i = activeMessageIndex - 1; i >= 0; i--) {
           if ("correct_answer" in messages[i]) {
             const msg = messages[i] as IBotMessage;
             botAnswer = msg.correct_answer as number;
