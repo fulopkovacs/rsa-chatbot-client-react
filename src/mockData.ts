@@ -62,6 +62,7 @@ export interface IUserMessage {
   button_label?: string;
   select_shape?: boolean;
   shapes?: IShapeString[];
+  two_choices?: [string, string];
 }
 
 /*
@@ -90,18 +91,31 @@ export const session1ChatMessages: IChatMessages = [
   },
   {
     sender: "bot",
-    message: "A négyzet kék.",
-    correct_answer: 0,
+    message: "Ez a mondat hamis.",
+    correct_answer: 1,
   },
   {
     sender: "bot",
-    message: "Melyikre gondolhattam?",
+    message: "Szerinted mit gondolok a fenti mondatról?",
   },
   {
     sender: "user",
     button_label: "Küldés",
-    select_shape: true,
-    shapes: ["square.blue", "circle.blue", "square.green", "square.blue"],
+    two_choices: ["igaz", "hamis"],
+  },
+  {
+    sender: "bot",
+    feedback: true,
+  },
+  {
+    sender: "bot",
+    message: "Ez a mondat igaz.",
+    correct_answer: 0,
+  },
+  {
+    sender: "user",
+    button_label: "Küldés",
+    two_choices: ["igaz", "hamis"],
   },
   {
     sender: "bot",
@@ -134,6 +148,16 @@ export const session2ChatMessages: IChatMessages = [
     sender: "user",
     message: "Indulhat a kísérlet.",
     button_label: "Küldés",
+  },
+  {
+    sender: "bot",
+    message: "Ez a mondat igaz.",
+    correct_answer: 0,
+  },
+  {
+    sender: "user",
+    button_label: "Küldés",
+    two_choices: ["igaz", "hamis"],
   },
   {
     sender: "bot",
@@ -186,6 +210,13 @@ const bot_feedback: IBotFeedBack = {
   },
 };
 
+const alerts = {
+  shapeNotSelectedAlert: "Válasszon egy formát!",
+  optionNotSelectedAlert: "Válasszon egy lehetőséget!",
+};
+
+export type IAlerts = typeof alerts;
+
 // TODO: do not use this data when the API endpoints are ready
 export type IExperimentConfig = typeof experimentConfig;
 // export type IExperimentConfig = typeof experimentConfig & {token:string};
@@ -208,6 +239,7 @@ Jelentkezését köszönjünk, kérjük nyomja meg a lent látható "START" gomb
     start_button_label: "START",
   },
   next_session_button_label: "Tovább",
+  alerts,
   sessions: [
     {
       bot_feedback,

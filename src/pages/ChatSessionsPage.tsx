@@ -16,9 +16,10 @@ import axios from "axios";
  */
 export interface ISessionMessage {
   message?: string;
-  selectedShape?: number;
+  userAnswer?: number;
   botMessage?: string;
   shapeOptions?: IShapeString[];
+  options?: string[];
 }
 
 /**
@@ -89,9 +90,11 @@ const ChatSessionsPage: React.FC<{}> = () => {
   const [introVisible, setIntroVisible] = useState(true);
 
   const contextValue = useContext(ExperimentConfigContext) as IValue;
+  // TODO: uncomment the following line after testing
   const { experimentConfig } = contextValue;
 
   const sessions = experimentConfig?.sessions;
+  const alerts = experimentConfig?.alerts;
 
   const [state, dispatch] = useReducer(reducer, {
     sessionHistory: [],
@@ -101,7 +104,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!sessions) navigate("/entry");
+    if (!sessions || !alerts) navigate("/entry");
   }, []);
   /**
    * Start the chat.
@@ -173,7 +176,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
 
   return (
     <>
-      {experimentConfig && sessions && (
+      {experimentConfig && sessions && alerts && (
         <>
           {introVisible ? (
             <ChatSessionIntro
@@ -194,6 +197,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
               next_session_button_label={
                 experimentConfig.next_session_button_label
               }
+              alerts={alerts}
             />
           )}
         </>

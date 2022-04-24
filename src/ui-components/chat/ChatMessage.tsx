@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   generateShapeData,
+  IAlerts,
   IBotMessage,
   IShapeColors,
   IShapeObject,
@@ -11,10 +12,6 @@ import Button from "../Button";
 import ErrorMessage from "../ErrorMessage";
 import { SquareSVG, CircleSVG, TriangleSVG } from "./Shapes";
 
-const text = {
-  shapeNotSelectedAlert: "Válasszon egy formát!",
-};
-
 /*
  * TODO:
  * Use `IBotMessagProps` and `IUserMessageProps`
@@ -23,6 +20,7 @@ const text = {
 interface IChatMessageProps {
   messageData: IBotMessage | IUserMessage;
   stepToNextUserMessage: () => void;
+  alerts: IAlerts;
 }
 
 interface IBotMessageProps {
@@ -35,6 +33,7 @@ interface IUserMessageProps {
   stepToNextUserMessage: (selectedShapeIndex?: number | null) => void;
   setSelectedShapeIndex?: () => void;
   messageData: IUserMessage;
+  alerts: IAlerts;
 }
 
 const BotMessage: React.FC<IBotMessageProps> = ({
@@ -52,11 +51,51 @@ const BotMessage: React.FC<IBotMessageProps> = ({
   );
 };
 
+// TODO: Rename this component... I was out of time when I came up with the name.
+const TwoOptionsSelector: React.FC<{
+  options: [string, string];
+  setUserAnswer: React.Dispatch<React.SetStateAction<number | null>>;
+  optionNotSelectedAlert: string;
+}> = ({ options, setUserAnswer, optionNotSelectedAlert }) => {
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<null | number>(
+    null
+  );
+  return (
+    <>
+      <div className="flex flex-wrap gap-5 justify-center">
+        {options.map((option, i) => (
+          <button
+            className={`border border-white p-2 ${
+              selectedOptionIndex === i && "bg-white text-green-500"
+            }`}
+            key={i}
+            onClick={() => {
+              setSelectedOptionIndex(i);
+              setUserAnswer(i);
+            }}
+          >
+            {option}
+          </button>
+        ))}
+      </div>
+      {selectedOptionIndex === null && (
+        <ErrorMessage type="dark">{optionNotSelectedAlert}</ErrorMessage>
+      )}
+    </>
+  );
+};
+
 const ShapeSelector: React.FC<{
   shapes: IShapeObject[];
   setSelectedShapeValue: React.Dispatch<React.SetStateAction<number | null>>;
   messageSentStatus: boolean;
-}> = ({ shapes, setSelectedShapeValue, messageSentStatus }) => {
+  shapeNotSelectedAlert: string;
+}> = ({
+  shapes,
+  setSelectedShapeValue,
+  messageSentStatus,
+  shapeNotSelectedAlert,
+}) => {
   const size = 50;
 
   const [selectedShapeIndex, setSelectedShapeIndex] = useState<number | null>(
@@ -103,7 +142,7 @@ const ShapeSelector: React.FC<{
           selectedShapeIndex !== null && "hidden"
         }`}
       >
-        <ErrorMessage type="dark">{text.shapeNotSelectedAlert}</ErrorMessage>
+        <ErrorMessage type="dark">{shapeNotSelectedAlert}</ErrorMessage>
       </span>
     </>
   );
@@ -113,18 +152,18 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   messageData,
   stepToNextUserMessage,
   commonProps,
+  alerts,
 }) => {
-  const { message, shapes, button_label } = messageData;
-  const [selectedShapeIndex, setSelectedShapeValue] = useState<number | null>(
-    null
-  );
+  const { message, shapes, button_label, two_choices } = messageData;
+  // TODO: this is not how the data should flow...
+  const [userAnswer, setUserAnswer] = useState<number | null>(null);
 
   const [messageSentStatus, setMessageSentStatus] = useState(false);
 
   function submitMessage() {
     // TODO: submit the response to the API
     // get the relevan info from the `ExperimentConfigContext`
-    stepToNextUserMessage(selectedShapeIndex);
+    stepToNextUserMessage(userAnswer);
     setMessageSentStatus(true);
   }
 
@@ -138,14 +177,22 @@ const UserMessage: React.FC<IUserMessageProps> = ({
             return generateShapeData(...shapeArgs);
           })}
           messageSentStatus={messageSentStatus}
-          setSelectedShapeValue={setSelectedShapeValue}
+          setSelectedShapeValue={setUserAnswer}
+          shapeNotSelectedAlert={alerts.shapeNotSelectedAlert}
+        />
+      )}
+      {two_choices && (
+        <TwoOptionsSelector
+          options={two_choices}
+          setUserAnswer={setUserAnswer}
+          optionNotSelectedAlert={alerts.optionNotSelectedAlert}
         />
       )}
       {button_label && messageSentStatus === false && (
         <Button
           handleClick={submitMessage}
           type="secondary"
-          disabled={shapes && selectedShapeIndex === null ? true : false}
+          disabled={shapes && userAnswer === null ? true : false}
         >
           {button_label}
         </Button>
@@ -157,6 +204,7 @@ const UserMessage: React.FC<IUserMessageProps> = ({
 const ChatMessage: React.FC<IChatMessageProps> = ({
   stepToNextUserMessage,
   messageData,
+  alerts,
 }) => {
   const { sender } = messageData;
   const commonProps =
@@ -168,6 +216,7 @@ const ChatMessage: React.FC<IChatMessageProps> = ({
       messageData={messageData}
       commonProps={commonProps}
       stepToNextUserMessage={stepToNextUserMessage}
+      alerts={alerts}
     />
   );
 };

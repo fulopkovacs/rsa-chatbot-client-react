@@ -1,7 +1,7 @@
 import Avatar from "../ui-components/chat/Avatar";
 import ChatMessage from "../ui-components/chat/ChatMessage";
 import { useEffect, useState } from "react";
-import { IBotFeedBack, IBotMessage, IChatMessages } from "../mockData";
+import { IAlerts, IBotFeedBack, IBotMessage, IChatMessages } from "../mockData";
 import React from "react";
 import MessageFrame from "../ui-components/chat/MessageFrame";
 import PageButton from "../ui-components/PageButton";
@@ -41,6 +41,7 @@ interface IChatProps {
   >;
   bot_feedback?: IBotFeedBack;
   next_session_button_label?: string;
+  alerts: IAlerts;
 }
 
 const Chat: React.FC<IChatProps> = ({
@@ -50,6 +51,7 @@ const Chat: React.FC<IChatProps> = ({
   dispatch,
   bot_feedback,
   next_session_button_label,
+  alerts,
 }) => {
   const [activeMessageIndex, setActiveMessageIndex] = useState(0);
   const [displayedMessages, setDisplayedMessages] = useState<IChatMessages>([]);
@@ -66,14 +68,14 @@ const Chat: React.FC<IChatProps> = ({
     }, 700);
   }, [nextMessage]);
 
-  // TODO: this solutions with the `selectedShapeIndex` looks very hacky
+  // TODO: this solutions with the `userAnswer` is very hacky
   /**
    * Steps to the next user message
    *
-   * @param selectedShapeIndex - the index of the selected shape
+   * @param userAnswer - the index of the selected shape
    *
    */
-  function stepToNextUserMessage(selectedShapeIndex?: number | null) {
+  function stepToNextUserMessage(userAnswer?: number | null) {
     let updatedActiveMessageIndex = activeMessageIndex;
 
     const currentMessageData = messages[activeMessageIndex];
@@ -93,8 +95,11 @@ const Chat: React.FC<IChatProps> = ({
       if ("shapes" in currentMessageData) {
         sessionMessage.shapeOptions = currentMessageData.shapes;
       }
-      if (selectedShapeIndex && currentMessageData.shapes) {
-        sessionMessage.selectedShape = selectedShapeIndex;
+      if ("two_choices" in currentMessageData) {
+        sessionMessage.options = currentMessageData.two_choices;
+      }
+      if (userAnswer !== null && userAnswer !== undefined) {
+        sessionMessage.userAnswer = userAnswer;
         let botAnswer: number;
         // Find the previous bot message that contains
         // a correct answer, and evaluate the user's answer
@@ -104,12 +109,13 @@ const Chat: React.FC<IChatProps> = ({
             botAnswer = msg.correct_answer as number;
             sessionMessage.correct_answer = botAnswer;
             let match: "match" | "almost_match" | "miss";
-            if (botAnswer === selectedShapeIndex) {
+            if (botAnswer === userAnswer) {
               sessionMessage.correct = true;
               match = "match";
             } else if (
+              currentMessageData.shapes &&
               currentMessageData.shapes[botAnswer] ===
-              currentMessageData.shapes[selectedShapeIndex]
+                currentMessageData.shapes[userAnswer]
             ) {
               sessionMessage.correct = false;
               match = "almost_match";
@@ -181,6 +187,7 @@ const Chat: React.FC<IChatProps> = ({
             <ChatMessage
               messageData={messageData}
               stepToNextUserMessage={stepToNextUserMessage}
+              alerts={alerts}
             />
             {((i === 0 && messages.length === 1) || // There's only one message
               i + 1 === messages.length || // This is the last message
