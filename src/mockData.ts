@@ -3,10 +3,14 @@
  *
  * @param sender - Type of the sender
  * @param message - Text of the message
+ * @param correct_answer - The correct answer to the bot's question
+ * @param feedback - `true` if the message is a feedback
  */
 export interface IBotMessage {
   sender: "bot";
   message?: string;
+  feedback?: boolean;
+  correct_answer?: number;
 }
 
 /**
@@ -55,7 +59,7 @@ export type IShapeString =
 export interface IUserMessage {
   sender: "user";
   message?: string;
-  button_label: string;
+  button_label?: string;
   select_shape?: boolean;
   shapes?: IShapeString[];
 }
@@ -73,7 +77,7 @@ export const generateShapeData = (
 ) => ({ shape: shape, fill_color: color });
 
 export type IChatMessages = (IBotMessage | IUserMessage)[];
-export const chatData: IChatMessages = [
+export const session1ChatMessages: IChatMessages = [
   {
     sender: "bot",
     message:
@@ -86,7 +90,8 @@ export const chatData: IChatMessages = [
   },
   {
     sender: "bot",
-    message: "A kör kék.",
+    message: "A négyzet kék.",
+    correct_answer: 0,
   },
   {
     sender: "bot",
@@ -100,11 +105,55 @@ export const chatData: IChatMessages = [
   },
   {
     sender: "bot",
-    message: "Akár erre is gondolhattam volna.",
+    feedback: true,
   },
   {
     sender: "bot",
     message: "A háromszög zöld.",
+    correct_answer: 0,
+  },
+  {
+    sender: "user",
+    button_label: "Küldés",
+    select_shape: true,
+    shapes: ["circle.green", "square.blue", "circle.blue"],
+  },
+  {
+    sender: "bot",
+    feedback: true,
+  },
+];
+
+export const session2ChatMessages: IChatMessages = [
+  {
+    sender: "bot",
+    message:
+      "Most is ugyanaz a feladat, mint az előbb. Kaptam egy képet amin meg volt jelölve egy alakzat. A következő üzenetben egy mondattal megpróbálom leírni, neked meg majd ki kéne találni, hogy melyikre gondoltam.",
+  },
+  {
+    sender: "user",
+    message: "Indulhat a kísérlet.",
+    button_label: "Küldés",
+  },
+  {
+    sender: "bot",
+    message: "A négyzet zöld.",
+    correct_answer: 2,
+  },
+  {
+    sender: "bot",
+    message: "Melyikre gondolhattam?",
+  },
+  {
+    sender: "user",
+    button_label: "Küldés",
+    select_shape: true,
+    shapes: ["square.blue", "circle.blue", "square.green", "square.blue"],
+  },
+  {
+    sender: "bot",
+    message: "A kör zöld.",
+    correct_answer: 0,
   },
   {
     sender: "user",
@@ -113,6 +162,30 @@ export const chatData: IChatMessages = [
     shapes: ["circle.green", "square.blue", "circle.blue"],
   },
 ];
+
+/**
+ * The bot's feedback config for the session
+ * @param feedback - `true` if the bot should give feedback messages
+ * @param messages - The content of the message that the bot should ssend
+ */
+export interface IBotFeedBack {
+  feedback: boolean;
+  messages: {
+    match: string;
+    almost_match: string;
+    miss: string;
+  };
+}
+
+const bot_feedback: IBotFeedBack = {
+  feedback: true,
+  messages: {
+    match: "Igen, erre gondoltam!",
+    almost_match: "Erre is gondolhattam volna.",
+    miss: "Nem erre gondoltam.",
+  },
+};
+
 // TODO: do not use this data when the API endpoints are ready
 export type IExperimentConfig = typeof experimentConfig;
 // export type IExperimentConfig = typeof experimentConfig & {token:string};
@@ -134,10 +207,12 @@ Jelentkezését köszönjünk, kérjük nyomja meg a lent látható "START" gomb
   `,
     start_button_label: "START",
   },
+  next_session_button_label: "Tovább",
   sessions: [
     {
+      bot_feedback,
       intro: {
-        title: 'Bemutatkozik a bot',
+        title: "Bemutatkozik a bot",
         bot_image: true,
         text: `
         Ezekben a kísérletekben ezzel a chatbottal fog beszélgetni.
@@ -146,7 +221,7 @@ Jelentkezését köszönjünk, kérjük nyomja meg a lent látható "START" gomb
           `,
         button_label: "Tovább",
       },
-      messages: chatData,
+      messages: session1ChatMessages,
     },
     {
       intro: {
@@ -156,7 +231,7 @@ Jelentkezését köszönjünk, kérjük nyomja meg a lent látható "START" gomb
           `,
         button_label: "Tovább",
       },
-      messages: chatData,
+      messages: session2ChatMessages,
     },
   ],
   outro: {
