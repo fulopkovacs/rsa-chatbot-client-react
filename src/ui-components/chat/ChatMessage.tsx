@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   generateShapeData,
-  IBotFeedBack,
   IBotMessage,
   IShapeColors,
   IShapeObject,
@@ -24,13 +23,11 @@ const text = {
 interface IChatMessageProps {
   messageData: IBotMessage | IUserMessage;
   stepToNextUserMessage: () => void;
-  bot_feedback?: IBotFeedBack;
 }
 
 interface IBotMessageProps {
   commonProps: string;
   messageData: IBotMessage;
-  bot_feedback?: IBotFeedBack;
 }
 
 interface IUserMessageProps {
@@ -43,9 +40,8 @@ interface IUserMessageProps {
 const BotMessage: React.FC<IBotMessageProps> = ({
   messageData,
   commonProps,
-  bot_feedback,
 }) => {
-  const { message, feedback } = messageData;
+  const { message } = messageData;
 
   return (
     <div className="flex justify-end font-mono">
@@ -161,17 +157,12 @@ const UserMessage: React.FC<IUserMessageProps> = ({
 const ChatMessage: React.FC<IChatMessageProps> = ({
   stepToNextUserMessage,
   messageData,
-  bot_feedback,
 }) => {
   const { sender } = messageData;
   const commonProps =
     "rounded-lg max-w-full mb-5 px-5 py-6 animate-fade-in-bottom w-max";
   return sender === "bot" ? (
-    <BotMessage
-      messageData={messageData}
-      commonProps={commonProps}
-      bot_feedback={bot_feedback}
-    />
+    <BotMessage messageData={messageData} commonProps={commonProps} />
   ) : (
     <UserMessage
       messageData={messageData}

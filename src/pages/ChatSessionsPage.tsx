@@ -152,8 +152,6 @@ const ChatSessionsPage: React.FC<{}> = () => {
               requestConfig
             )
             .then((resp) => {
-              // TODO: remove the next line after testing
-              console.log(resp.data);
               navigate("/outro");
             })
             .catch((err) => {

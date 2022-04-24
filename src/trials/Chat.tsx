@@ -179,7 +179,6 @@ const Chat: React.FC<IChatProps> = ({
         return (
           <React.Fragment key={i}>
             <ChatMessage
-              bot_feedback={bot_feedback}
               messageData={messageData}
               stepToNextUserMessage={stepToNextUserMessage}
             />
@@ -198,7 +197,7 @@ const Chat: React.FC<IChatProps> = ({
       {messageComponents}
       {displayedMessages.length === messages.length && (
         <PageButton type="primary" handleClick={goToNextChatSession}>
-          {experimentConfig.next_session_button_label}
+          {next_session_button_label}
         </PageButton>
       )}
     </MessageFrame>
