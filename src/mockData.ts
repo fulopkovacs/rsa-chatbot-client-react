@@ -102,6 +102,7 @@ export const session1ChatMessages: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     two_choices: ["igaz", "hamis"],
+    shapes: ["circle.green", "square.blue", "circle.blue"],
   },
   {
     sender: "bot",
@@ -116,6 +117,7 @@ export const session1ChatMessages: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     two_choices: ["igaz", "hamis"],
+    shapes: ["circle.green", "square.blue", "circle.blue"],
   },
   {
     sender: "bot",
@@ -158,6 +160,7 @@ export const session2ChatMessages: IChatMessages = [
     sender: "user",
     button_label: "Küldés",
     two_choices: ["igaz", "hamis"],
+    shapes: ["circle.green", "square.blue", "circle.blue"],
   },
   {
     sender: "bot",

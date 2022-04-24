@@ -56,12 +56,42 @@ const TwoOptionsSelector: React.FC<{
   options: [string, string];
   setUserAnswer: React.Dispatch<React.SetStateAction<number | null>>;
   optionNotSelectedAlert: string;
-}> = ({ options, setUserAnswer, optionNotSelectedAlert }) => {
+  shapes: IShapeObject[];
+  messageSentStatus: boolean;
+}> = ({
+  options,
+  setUserAnswer,
+  optionNotSelectedAlert,
+  shapes,
+  messageSentStatus,
+}) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<null | number>(
     null
   );
+  const size = 50;
+
   return (
     <>
+      <div
+        className={`flex flex-wrap gap-5 bg-white justify-center m-3 p-2 rounded-md ${
+          messageSentStatus && "opacity-50"
+        }`}
+      >
+        {shapes.map((shapeData, i) => {
+          const ShapeSVG =
+            shapeData.shape === "square"
+              ? SquareSVG
+              : shapeData.shape === "circle"
+              ? CircleSVG
+              : TriangleSVG;
+
+          return (
+            <span key={i}>
+              {<ShapeSVG fillColor={shapeData.fill_color} size={size} />}
+            </span>
+          );
+        })}
+      </div>
       <div className="flex flex-wrap gap-5 justify-center">
         {options.map((option, i) => (
           <button
@@ -154,7 +184,8 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   commonProps,
   alerts,
 }) => {
-  const { message, shapes, button_label, two_choices } = messageData;
+  const { message, shapes, button_label, two_choices, select_shape } =
+    messageData;
   // TODO: this is not how the data should flow...
   const [userAnswer, setUserAnswer] = useState<number | null>(null);
 
@@ -170,7 +201,7 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   return (
     <div className={`${commonProps} bg-green-500 text-white transition-all`}>
       <p className="w-auto">{message}</p>
-      {shapes && (
+      {select_shape && shapes && (
         <ShapeSelector
           shapes={shapes.map((shape) => {
             const shapeArgs = shape.split(".") as [IShapesShape, IShapeColors];
@@ -181,11 +212,16 @@ const UserMessage: React.FC<IUserMessageProps> = ({
           shapeNotSelectedAlert={alerts.shapeNotSelectedAlert}
         />
       )}
-      {two_choices && (
+      {two_choices && shapes && (
         <TwoOptionsSelector
           options={two_choices}
+          shapes={shapes.map((shape) => {
+            const shapeArgs = shape.split(".") as [IShapesShape, IShapeColors];
+            return generateShapeData(...shapeArgs);
+          })}
           setUserAnswer={setUserAnswer}
           optionNotSelectedAlert={alerts.optionNotSelectedAlert}
+          messageSentStatus={messageSentStatus}
         />
       )}
       {button_label && messageSentStatus === false && (

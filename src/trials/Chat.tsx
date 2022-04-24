@@ -40,7 +40,7 @@ interface IChatProps {
     IUpdateSessionHistoryAction | IUpdateOriginalMessagesAction
   >;
   bot_feedback?: IBotFeedBack;
-  next_session_button_label?: string;
+  next_session_button_label: string;
   alerts: IAlerts;
 }
 
