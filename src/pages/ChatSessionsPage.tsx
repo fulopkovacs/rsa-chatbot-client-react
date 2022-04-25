@@ -135,13 +135,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
             headers: { Authorization: `Bearer ${access_token}` },
           };
           // TODO: Use an environmental variable for the api config
-          let apiBaseUrl: string;
-
-          if (process.env.NODE_ENV === "development") {
-            apiBaseUrl = "http://localhost:8000";
-          } else {
-            apiBaseUrl = "";
-          }
+          const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
           axios
             .post(

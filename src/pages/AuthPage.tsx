@@ -31,14 +31,7 @@ function AuthPage() {
     // Show the error message if the code field is empty
     if (!accessCode) return setErrorMessageVisible(true);
 
-    // TODO: Use an environmental variable for the api config
-    let apiBaseUrl: string;
-
-    if (process.env.NODE_ENV === "development") {
-      apiBaseUrl = "http://localhost:8000";
-    } else {
-      apiBaseUrl = "";
-    }
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
     axios
       .post(apiBaseUrl + "/entry/get-token?code=" + accessCode.toString())
