@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ExperimentConfigContext, IValue } from "../ExperimentConfigContext";
 import PageTitle from "../ui-components/PageTitle";
 import axios from "axios";
+import { experimentConfig as mockData } from "../mockData";
 
 const text = {
   instruction: "Kérjük adja meg a kísérlethez kapott kódot!",
@@ -27,35 +28,48 @@ function AuthPage() {
   }
 
   function handleSubmit(e: React.MouseEvent) {
-    e.preventDefault();
-    // Show the error message if the code field is empty
-    if (!accessCode) return setErrorMessageVisible(true);
+    // The "noauth" mode is used for development
+    // It makes it possible to work on the codebase without running the backend
+    if (import.meta.env.MODE === "noauth") {
+      // QUESTION: do we have to save a fake access token?
+      // 1. Do not send the request
+      // 2. Load the example config
+      // console.log(sampleData);
+      // 3. Redirect to the chat page
+      setExperimentConfig(mockData);
+      // 2. redirect to intro
+      navigate("/intro");
+    } else {
+      e.preventDefault();
+      // Show the error message if the code field is empty
+      if (!accessCode) return setErrorMessageVisible(true);
 
-    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
-    axios
-      .post(apiBaseUrl + "/entry/get-token?code=" + accessCode.toString())
-      .then((resp) => {
-        const access_token: string = resp.data.access_token;
-        localStorage.setItem("access_token", access_token);
-        const requestConfig = {
-          headers: { Authorization: `Bearer ${access_token}` },
-        };
+      axios
+        .post(apiBaseUrl + "/entry/get-token?code=" + accessCode.toString())
+        .then((resp) => {
+          const access_token: string = resp.data.access_token;
+          localStorage.setItem("access_token", access_token);
+          const requestConfig = {
+            headers: { Authorization: `Bearer ${access_token}` },
+          };
 
-        axios
-          .get(apiBaseUrl + "/entry/experiment-config", requestConfig)
-          .then((resp2) => {
-            console.log(resp2.data);
-            // 1. set config
-            setExperimentConfig(resp2.data);
-            // 2. redirect to intro
-            navigate("/intro");
-          });
-      })
-      .catch((err) => {
-        console.log(err);
-        setErrorMessageVisible(true);
-      });
+          axios
+            .get(apiBaseUrl + "/entry/experiment-config", requestConfig)
+            .then((resp2) => {
+              console.log(resp2.data);
+              // 1. set config
+              setExperimentConfig(resp2.data);
+              // 2. redirect to intro
+              navigate("/intro");
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+          setErrorMessageVisible(true);
+        });
+    }
   }
 
   return (
