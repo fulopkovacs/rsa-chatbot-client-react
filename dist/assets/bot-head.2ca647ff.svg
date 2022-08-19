@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 316 269" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Head">
+        <path d="M39.994,68.4C19.94,81.474 4.069,215.28 14.908,235.147C22.681,249.394 101.618,255.898 144.61,258.697C187.329,261.478 257.589,266.666 272.861,251.942C285.046,240.194 288.715,146.826 278.225,117.985C270.794,97.553 59.235,55.857 39.994,68.4Z" style="fill:none;stroke:#000;stroke-width:14px;"/>
+        <path id="Eye_left" d="M57.018,141.438C57.018,141.438 71.032,134.41 77.95,119.133C82.057,133.887 94.818,149.837 94.818,149.837" style="fill:none;stroke:#000;stroke-width:14px;"/>
+        <path id="Eye_right" d="M166.181,169.469C166.181,169.469 186.205,160.528 190.411,143.751C193.14,159.491 212.894,180.172 212.894,180.172" style="fill:none;stroke:#000;stroke-width:14px;"/>
+        <path id="Mouth" d="M102.278,190.391L117.841,215.106L141.883,198.529" style="fill:none;stroke:#000;stroke-width:14px;"/>
+        <path d="M37.909,69.541C41.574,66.668 32.407,27.881 21.252,21.039" style="fill:none;stroke:#000;stroke-width:14px;"/>
+        <circle cx="21.252" cy="21.039" r="17.127"/>
+        <circle cx="294.944" cy="74.382" r="17.127"/>
+        <path d="M272.751,111.887C277.645,91.141 283.951,88.364 294.944,74.382" style="fill:none;stroke:#000;stroke-width:14px;"/>
+    </g>
+</svg>
