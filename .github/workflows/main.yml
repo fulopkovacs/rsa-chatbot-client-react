@@ -13,7 +13,17 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+      # The following step should only run for pull requests
       - uses: actions/checkout@v3
+        name: Checkout on "Pull request" events
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+      # The following step should only run on non-pull-request events (e.g. push)
+      - uses: actions/checkout@v3
+        name: Checkout on events that are not "Pull requests"
+        if: ${{ github.event_name != 'pull_request' }}
       - uses: actions/setup-node@v3
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
