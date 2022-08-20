@@ -1,7 +1,7 @@
 # RSA Chatbot Front End
 
 This chatbot was developed for research purposes. Corresponding API:
-[https://github.com/fulopkovacs/fulopkovacs/rsa-chatbot-backend](https://github.com/fulopkovacs/fulopkovacs/rsa-chatbot-backend)
+[https://github.com/fulopkovacs/rsa-chatbot-backend](https://github.com/fulopkovacs/rsa-chatbot-backend)
 
 ## Setup
 
