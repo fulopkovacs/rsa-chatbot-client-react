@@ -66,7 +66,7 @@ const TwoOptionsSelector: React.FC<{
   messageSentStatus,
 }) => {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState<null | number>(
-    null
+    null,
   );
   const size = 50;
 
@@ -97,7 +97,12 @@ const TwoOptionsSelector: React.FC<{
           <button
             className={`border border-white p-2 ${
               selectedOptionIndex === i && "bg-white text-green-500"
-            } ${messageSentStatus && "pointer-events-none opacity-50"}`}
+            } ${
+              messageSentStatus
+                ? "pointer-events-none opacity-50"
+                : selectedOptionIndex !== i &&
+                  "hover:bg-opacity-30 hover:bg-white"
+            }`}
             key={i}
             onClick={() => {
               setSelectedOptionIndex(i);
@@ -129,7 +134,7 @@ const ShapeSelector: React.FC<{
   const size = 50;
 
   const [selectedShapeIndex, setSelectedShapeIndex] = useState<number | null>(
-    null
+    null,
   );
 
   function selectShape(shapeIndex: number) {
@@ -184,8 +189,13 @@ const UserMessage: React.FC<IUserMessageProps> = ({
   commonProps,
   alerts,
 }) => {
-  const { message, shapes, button_label, two_choices, select_shape } =
-    messageData;
+  const {
+    message,
+    shapes,
+    button_label,
+    two_choices,
+    select_shape,
+  } = messageData;
   // TODO: this is not how the data should flow...
   const [userAnswer, setUserAnswer] = useState<number | null>(null);
 
