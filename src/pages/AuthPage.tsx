@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ExperimentConfigContext, IValue } from "../ExperimentConfigContext";
 import PageTitle from "../ui-components/PageTitle";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 import { experimentConfig as mockData } from "../mockData";
 
 const text = {
@@ -46,6 +47,7 @@ function AuthPage() {
 
       const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
+      axiosRetry(axios, { retries: 3 });
       axios
         .post(apiBaseUrl + "/entry/get-token?code=" + accessCode.toString())
         .then((resp) => {

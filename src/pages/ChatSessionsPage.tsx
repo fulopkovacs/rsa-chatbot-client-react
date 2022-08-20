@@ -6,6 +6,8 @@ import { ExperimentConfigContext } from "../ExperimentConfigContext";
 import type { IValue } from "../ExperimentConfigContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosRetry from "axios-retry";
+
 /**
  * The user's message + relevant info
  *
@@ -136,6 +138,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
           };
           // TODO: Use an environmental variable for the api config
           const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+          axiosRetry(axios, { retries: 3 });
 
           axios
             .post(
@@ -153,6 +156,7 @@ const ChatSessionsPage: React.FC<{}> = () => {
             })
             .catch((err) => {
               console.error(err);
+              // TODO: try again?
               navigate("/outro");
             });
         } else {
