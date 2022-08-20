@@ -19,3 +19,7 @@ site deployments on Digital Ocean.
 Luckily, we configured GitHub Actions to build the project and commit the `dist`
 directory automatically when we're pushing to something to `main`, or targeting
 `main` in a pull request.
+
+This setup will, however, lead to a huge number of `Update "dist"`-commits done
+by the GH CI-bot and the local environment of the developers will keep getting
+outdated.
