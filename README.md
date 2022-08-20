@@ -1,0 +1,18 @@
+# RSA Chatbot Front End
+
+This chatbot was developed for research purposes. Corresponding API:
+[https://github.com/fulopkovacs/fulopkovacs/rsa-chatbot-backend](https://github.com/fulopkovacs/fulopkovacs/rsa-chatbot-backend)
+
+## Setup
+
+Run the dev server:
+
+```sh
+yarn run
+```
+
+
+
+## Deployment
+
+Unfortunately we have to build and commit the `dist` folder to enable static site deployments on Digital Ocean.
