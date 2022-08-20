@@ -11,8 +11,11 @@ Run the dev server:
 yarn run
 ```
 
-
-
 ## Deployment
 
-Unfortunately we have to build and commit the `dist` folder to enable static site deployments on Digital Ocean.
+Unfortunately we have to build and commit the `dist` folder to enable static
+site deployments on Digital Ocean.
+
+Luckily, we configured GitHub Actions to build the project and commit the `dist`
+directory automatically when we're pushing to something to `main`, or targeting
+`main` in a pull request.
